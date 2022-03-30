@@ -1,4 +1,4 @@
-package com.stock.exceptions;
+package com.stock.exceptions.handler;
 
 import java.time.Instant;
 
@@ -11,6 +11,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.stock.exceptions.DatabaseException;
+import com.stock.exceptions.ResourceNotFoundException;
+import com.stock.exceptions.StandardError;
+import com.stock.exceptions.ValidationError;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {

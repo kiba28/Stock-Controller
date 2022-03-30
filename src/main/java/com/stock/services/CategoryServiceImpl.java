@@ -10,9 +10,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.stock.dto.CategoryDTO;
+import com.stock.dto.CategoryFormDTO;
 import com.stock.entities.Category;
-import com.stock.entities.dto.CategoryDTO;
-import com.stock.entities.dto.CategoryFormDTO;
 import com.stock.repositories.CategoryRepository;
 
 @Service

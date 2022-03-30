@@ -3,8 +3,8 @@ package com.stock.services;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import com.stock.entities.dto.ProductDTO;
-import com.stock.entities.dto.ProductFormDTO;
+import com.stock.dto.ProductDTO;
+import com.stock.dto.ProductFormDTO;
 
 public interface ProductService {
 

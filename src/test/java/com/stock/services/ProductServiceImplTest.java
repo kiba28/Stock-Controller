@@ -26,9 +26,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.stock.builders.CategoryBuilder;
 import com.stock.builders.ProductBuilder;
+import com.stock.dto.ProductDTO;
+import com.stock.dto.ProductFormDTO;
 import com.stock.entities.Product;
-import com.stock.entities.dto.ProductDTO;
-import com.stock.entities.dto.ProductFormDTO;
 import com.stock.exceptions.ResourceNotFoundException;
 import com.stock.repositories.CategoryRepository;
 import com.stock.repositories.ProductRepository;

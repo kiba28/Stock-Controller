@@ -1,4 +1,4 @@
-package com.stock.entities.dto;
+package com.stock.dto;
 
 import java.io.Serializable;
 

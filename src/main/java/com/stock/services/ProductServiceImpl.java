@@ -10,9 +10,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.stock.dto.ProductDTO;
+import com.stock.dto.ProductFormDTO;
 import com.stock.entities.Product;
-import com.stock.entities.dto.ProductDTO;
-import com.stock.entities.dto.ProductFormDTO;
 import com.stock.exceptions.ResourceNotFoundException;
 import com.stock.repositories.CategoryRepository;
 import com.stock.repositories.ProductRepository;
