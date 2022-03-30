@@ -56,7 +56,6 @@ public class ProductServiceImpl implements ProductService {
 				.orElseThrow(() -> new ResourceNotFoundException("Category not found " + body.getCategoryID())));
 
 		return mapper.map(repository.save(product), ProductDTO.class);
-
 	}
 
 	@Override
@@ -71,7 +70,6 @@ public class ProductServiceImpl implements ProductService {
 		Product product = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 		repository.delete(product);
-
 	}
 
 }

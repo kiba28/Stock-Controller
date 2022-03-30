@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -113,8 +115,65 @@ class ProductServiceImplTest {
 	}
 
 	@Test
+	public void naoDeveriaAtualizarUmProdutoPoisNaoExisteProdutoComOIdInformado() {
+		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
+
+		assertThatExceptionOfType(ResourceNotFoundException.class)
+				.isThrownBy(() -> this.service.updateProduct(2L, ProductBuilder.getProductFormDTO()));
+	}
+
+	@Test
 	public void naoDeveriaAtualizarUmProdutoPoisNaoExisteCategoriaComOIdInformado() {
+		Product product = ProductBuilder.getProduct();
+
+		when(this.repository.findById(anyLong())).thenReturn(Optional.of(product));
+		when(this.categoryRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+		assertThatExceptionOfType(ResourceNotFoundException.class)
+				.isThrownBy(() -> this.service.updateProduct(1L, ProductBuilder.getProductFormDTO()));
+	}
+	
+	@Test
+	public void deveriaEncontrarUmProdutoPeloId() {
+		Product product = ProductBuilder.getProduct();
+
+		when(this.repository.findById(anyLong())).thenReturn(Optional.of(product));
+
+		ProductDTO productDto = this.service.findById(1L);
+
+		assertThat(productDto.getId()).isNotNull();
+		assertThat(productDto.getName()).isEqualTo(product.getName());
+		assertThat(productDto.getPrice()).isEqualTo(product.getPrice());
+		assertThat(productDto.getUnity()).isEqualTo(product.getUnity());
+		assertThat(productDto.getMinStock()).isEqualTo(product.getMinStock());
+		assertThat(productDto.getCategory()).isEqualTo(product.getCategory());
+	}
+	
+	@Test
+	public void naoDeveriaEncontrarUmProdutoPoisNaoExisteProdutoComOIdInformado() {
+		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
+
+		assertThatExceptionOfType(ResourceNotFoundException.class)
+				.isThrownBy(() -> this.service.findById(2L));
+	}
+	
+	@Test
+	public void deveriaDeletarUmProdutoPeloId() {
+		Product product = ProductBuilder.getProduct();
+
+		when(this.repository.findById(anyLong())).thenReturn(Optional.of(product));
+
+		this.service.deleteProduct(1L);
 		
+		verify(this.repository, times(1)).delete(product);
+	}
+	
+	@Test
+	public void naoDeveriaDeletarUmProdutoPoisNaoExisteProdutoComOIdInformado() {
+		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
+
+		assertThatExceptionOfType(ResourceNotFoundException.class)
+				.isThrownBy(() -> this.service.deleteProduct(2L));
 	}
 
 }
