@@ -52,6 +52,8 @@ public class ProductServiceImpl implements ProductService {
 		product.setMinStock(body.getMinStock());
 		product.setUnity(body.getUnity());
 		product.setPrice(body.getPrice());
+		product.setCategory(categoryRepository.findById(body.getCategoryID())
+				.orElseThrow(() -> new ResourceNotFoundException("Category not found " + body.getCategoryID())));
 
 		return mapper.map(repository.save(product), ProductDTO.class);
 

@@ -8,13 +8,13 @@ import com.stock.entities.dto.CategoryFormDTO;
 
 public interface CategoryService {
 
-   CategoryDTO save(CategoryFormDTO body);
-	
+	CategoryDTO save(CategoryFormDTO body);
+
 	Page<CategoryDTO> listCategories(PageRequest pageRequest);
-	
-	CategoryDTO  updateCategory(Long id, CategoryFormDTO body);
-	
-	CategoryDTO  findById(Long id);
-	
+
+	CategoryDTO updateCategory(Long id, CategoryFormDTO body);
+
+	CategoryDTO findById(Long id);
+
 	void deleteCategory(Long id);
 }

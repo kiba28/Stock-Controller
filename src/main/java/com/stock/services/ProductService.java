@@ -8,13 +8,13 @@ import com.stock.entities.dto.ProductFormDTO;
 
 public interface ProductService {
 
-   ProductDTO saveProduct(ProductFormDTO body);
-	
+	ProductDTO saveProduct(ProductFormDTO body);
+
 	Page<ProductDTO> listProducts(PageRequest pageRequest);
-	
-	ProductDTO  updateProduct(Long id, ProductFormDTO body);
-	
-	ProductDTO  findById(Long id);
-	
+
+	ProductDTO updateProduct(Long id, ProductFormDTO body);
+
+	ProductDTO findById(Long id);
+
 	void deleteProduct(Long id);
 }

@@ -3,6 +3,7 @@ package com.stock.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +19,6 @@ import com.stock.entities.dto.ProductDTO;
 import com.stock.entities.dto.ProductFormDTO;
 import com.stock.services.ProductService;
 
-
-
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -32,13 +31,15 @@ public class ProductController {
 
 		ProductDTO prod = productService.saveProduct(product);
 
-		return ResponseEntity.ok(prod);
+		return ResponseEntity.status(HttpStatus.CREATED).body(prod);
 	}
 
 	@PutMapping(path = "/{id}")
-	public ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductFormDTO product) {
+	public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductFormDTO product) {
 
-		return productService.updateProduct(id, product);
+		ProductDTO prod = productService.updateProduct(id, product);
+
+		return ResponseEntity.status(HttpStatus.OK).body(prod);
 
 	}
 

@@ -7,7 +7,7 @@ public final class CategoryBuilder {
 		Category category = new Category();
 		category.setId(1L);
 		category.setName("Escolares");
-		
+
 		return category;
 	}
 }

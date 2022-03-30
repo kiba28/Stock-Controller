@@ -13,10 +13,10 @@ public final class ProductBuilder {
 		prod.setUnity("UN");
 		prod.setMinStock(5);
 		prod.setCategory(CategoryBuilder.getCategory());
-		
+
 		return prod;
 	}
-	
+
 	public static ProductDTO getProductDTO() {
 		ProductDTO prod = new ProductDTO();
 		prod.setId(1L);
@@ -25,10 +25,10 @@ public final class ProductBuilder {
 		prod.setUnity("UN");
 		prod.setMinStock(5);
 		prod.setCategory(CategoryBuilder.getCategory());
-		
+
 		return prod;
 	}
-	
+
 	public static ProductFormDTO getProductFormDTO() {
 		ProductFormDTO prod = new ProductFormDTO();
 		prod.setName("Mochila");
@@ -36,7 +36,8 @@ public final class ProductBuilder {
 		prod.setUnity("UN");
 		prod.setMinStock(5);
 		prod.setCategoryID(1L);
-		
+		prod.setCategory(CategoryBuilder.getCategory());
+
 		return prod;
 	}
 }
