@@ -28,11 +28,11 @@ public class Product {
 	private Category category;
 	
 	public void entrance(double qtd) {
-		this.quantityStock=+ qtd;
+		this.quantityStock += qtd;
 	}
 	
 	public void exit(double qtd) {
-		this.quantityStock=- qtd;
+		this.quantityStock += qtd;
 	}
 
 }
