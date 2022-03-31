@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.stock.dto.CategoryDTO;
 import com.stock.dto.CategoryFormDTO;
 import com.stock.entities.Category;
+import com.stock.exceptions.ResourceNotFoundException;
 import com.stock.repositories.CategoryRepository;
 
 @Service
@@ -42,24 +43,22 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public CategoryDTO updateCategory(Long id, CategoryFormDTO body) {
 		Category category = repository.findById(id)
-				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 		category.setName(body.getName());
 		return mapper.map(repository.save(category), CategoryDTO.class);
-
 	}
 
 	@Override
 	public CategoryDTO findById(Long id) {
 		Category category = repository.findById(id)
-				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
-		return mapper.map(repository.save(category), CategoryDTO.class);
-
+				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+		return mapper.map(category, CategoryDTO.class);
 	}
 
 	@Override
 	public void deleteCategory(Long id) {
 		Category category = repository.findById(id)
-				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 		repository.delete(category);
 	}
 

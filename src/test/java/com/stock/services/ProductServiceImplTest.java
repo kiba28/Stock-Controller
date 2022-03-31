@@ -85,6 +85,7 @@ class ProductServiceImplTest {
 		Page<ProductDTO> productDtoAsPage = service.listProducts(PageRequest.of(0, 12, Direction.ASC, "name"));
 		ProductDTO productDto = productDtoAsPage.getContent().get(0);
 
+		assertThat(productDtoAsPage.getContent().size()).isGreaterThan(0);
 		assertThat(productDto.getId()).isNotNull();
 		assertThat(productDto.getName()).isEqualTo(product.getName());
 		assertThat(productDto.getPrice()).isEqualTo(product.getPrice());
