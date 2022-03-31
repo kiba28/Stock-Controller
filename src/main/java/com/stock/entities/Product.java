@@ -18,6 +18,7 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	private double quantityStock;
 	private double price;
 	private String unity;
 	private double minStock;
@@ -25,5 +26,13 @@ public class Product {
 	@ManyToOne
 	@JsonIgnore
 	private Category category;
+	
+	public void entrance(double qtd) {
+		this.quantityStock=+ qtd;
+	}
+	
+	public void exit(double qtd) {
+		this.quantityStock=- qtd;
+	}
 
 }

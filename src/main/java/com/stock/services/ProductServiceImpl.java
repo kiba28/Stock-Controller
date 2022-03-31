@@ -50,6 +50,7 @@ public class ProductServiceImpl implements ProductService {
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 		product.setName(body.getName());
 		product.setMinStock(body.getMinStock());
+		product.setQuantityStock(body.getQuantityStock());
 		product.setUnity(body.getUnity());
 		product.setPrice(body.getPrice());
 		product.setCategory(categoryRepository.findById(body.getCategoryID())
