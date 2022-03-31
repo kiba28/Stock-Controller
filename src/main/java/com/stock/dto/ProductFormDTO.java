@@ -21,6 +21,8 @@ public class ProductFormDTO {
 	@NotBlank(message = "Campo Obrigatório")
 	private String unity;
 	@Positive(message = "Estoque deve ser um valor positivo")
+	private double quantityStock;
+	@Positive(message = "Estoque deve ser um valor positivo")
 	private double minStock;
 	private long categoryID;
 	private Category category;
