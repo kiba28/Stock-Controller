@@ -32,6 +32,7 @@ import com.stock.entities.Product;
 import com.stock.exceptions.ResourceNotFoundException;
 import com.stock.repositories.CategoryRepository;
 import com.stock.repositories.ProductRepository;
+import com.stock.services.implementations.ProductServiceImpl;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)

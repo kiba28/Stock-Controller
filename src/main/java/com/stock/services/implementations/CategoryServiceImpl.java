@@ -1,4 +1,4 @@
-package com.stock.services;
+package com.stock.services.implementations;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +14,7 @@ import com.stock.dto.CategoryDTO;
 import com.stock.dto.CategoryFormDTO;
 import com.stock.entities.Category;
 import com.stock.repositories.CategoryRepository;
+import com.stock.services.CategoryService;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
