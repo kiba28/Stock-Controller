@@ -32,7 +32,7 @@ public class Product {
 	}
 	
 	public void exit(double qtd) {
-		this.quantityStock += qtd;
+		this.quantityStock -= qtd;
 	}
 
 }

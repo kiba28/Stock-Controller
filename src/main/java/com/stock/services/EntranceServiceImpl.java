@@ -7,7 +7,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import com.stock.dto.EntranceDTO;
@@ -34,16 +36,8 @@ public class EntranceServiceImpl implements EntranceService {
 		Product product = productRepository.findById(body.getProductId())
 				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + body.getProductId()));
 		product.entrance(body.getAmount());
+		
 		return mapper.map(repository.save(mapper.map(body, Entrance.class)), EntranceDTO.class);
-	}
-
-	@Override
-	public Page<EntranceDTO> listEntrance(PageRequest pageRequest) {
-		Page<Entrance> page = repository.findAll(pageRequest);
-
-		List<EntranceDTO> list = page.getContent().stream().map(Entrance -> mapper.map(Entrance, EntranceDTO.class))
-				.collect(Collectors.toList());
-		return new PageImpl<>(list);
 	}
 
 	@Override
@@ -63,7 +57,7 @@ public class EntranceServiceImpl implements EntranceService {
 	public EntranceDTO findById(Long id) {
 		Entrance entrance = repository.findById(id)
 				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
-		return mapper.map(repository.save(entrance), EntranceDTO.class);
+		return mapper.map(entrance.getId(), EntranceDTO.class);
 
 	}
 
@@ -72,6 +66,17 @@ public class EntranceServiceImpl implements EntranceService {
 		Entrance entrance = repository.findById(id)
 				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
 		repository.delete(entrance);
+	}
+
+	@Override
+	public Page<EntranceDTO> listEntrance(	@PageableDefault(sort = "id", direction = Direction.ASC) Pageable paginacao) 
+	
+	{
+		Page<Entrance> page = repository.findAll(paginacao);
+
+		List<EntranceDTO> list = page.getContent().stream().map(Entrance -> mapper.map(Entrance, EntranceDTO.class))
+				.collect(Collectors.toList());
+		return new PageImpl<>(list);
 	}
 
 }
