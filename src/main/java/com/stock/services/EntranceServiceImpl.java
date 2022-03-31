@@ -45,7 +45,7 @@ public class EntranceServiceImpl implements EntranceService {
 		Entrance entrance = repository.findById(id)	
 				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
 		Product product = productRepository.findById(body.getProductId())
-				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
+				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + body.getProductId()));
 		product.exit(entrance.getAmount());
 		product.entrance(body.getAmount());
 		entrance.setAmount(body.getAmount());
@@ -65,6 +65,9 @@ public class EntranceServiceImpl implements EntranceService {
 	public void deleteEntrance(Long id) {
 		Entrance entrance = repository.findById(id)
 				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
+		Product product = productRepository.findById(entrance.getProductId())
+				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + entrance.getProductId()));
+		product.exit(entrance.getAmount());
 		repository.delete(entrance);
 	}
 
