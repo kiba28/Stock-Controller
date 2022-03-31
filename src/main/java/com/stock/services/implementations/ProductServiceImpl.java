@@ -1,4 +1,4 @@
-package com.stock.services;
+package com.stock.services.implementations;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +16,7 @@ import com.stock.entities.Product;
 import com.stock.exceptions.ResourceNotFoundException;
 import com.stock.repositories.CategoryRepository;
 import com.stock.repositories.ProductRepository;
+import com.stock.services.ProductService;
 
 @Service
 public class ProductServiceImpl implements ProductService {

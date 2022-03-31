@@ -1,4 +1,4 @@
-package com.stock.services;
+package com.stock.services.implementations;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +16,7 @@ import com.stock.entities.Entrance;
 import com.stock.entities.Product;
 import com.stock.repositories.EntranceRepository;
 import com.stock.repositories.ProductRepository;
+import com.stock.services.EntranceService;
 
 @Service
 public class EntranceServiceImpl implements EntranceService {
