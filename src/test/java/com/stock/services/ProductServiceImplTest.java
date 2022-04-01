@@ -134,7 +134,7 @@ class ProductServiceImplTest {
 		assertThatExceptionOfType(ResourceNotFoundException.class)
 				.isThrownBy(() -> this.service.updateProduct(1L, ProductBuilder.getProductFormDTO()));
 	}
-	
+
 	@Test
 	public void deveriaEncontrarUmProdutoPeloId() {
 		Product product = ProductBuilder.getProduct();
@@ -150,15 +150,14 @@ class ProductServiceImplTest {
 		assertThat(productDto.getMinStock()).isEqualTo(product.getMinStock());
 		assertThat(productDto.getCategory()).isEqualTo(product.getCategory());
 	}
-	
+
 	@Test
 	public void naoDeveriaEncontrarUmProdutoPoisNaoExisteProdutoComOIdInformado() {
 		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
-		assertThatExceptionOfType(ResourceNotFoundException.class)
-				.isThrownBy(() -> this.service.findById(2L));
+		assertThatExceptionOfType(ResourceNotFoundException.class).isThrownBy(() -> this.service.findById(2L));
 	}
-	
+
 	@Test
 	public void deveriaDeletarUmProdutoPeloId() {
 		Product product = ProductBuilder.getProduct();
@@ -166,16 +165,15 @@ class ProductServiceImplTest {
 		when(this.repository.findById(anyLong())).thenReturn(Optional.of(product));
 
 		this.service.deleteProduct(1L);
-		
+
 		verify(this.repository, times(1)).delete(product);
 	}
-	
+
 	@Test
 	public void naoDeveriaDeletarUmProdutoPoisNaoExisteProdutoComOIdInformado() {
 		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
-		assertThatExceptionOfType(ResourceNotFoundException.class)
-				.isThrownBy(() -> this.service.deleteProduct(2L));
+		assertThatExceptionOfType(ResourceNotFoundException.class).isThrownBy(() -> this.service.deleteProduct(2L));
 	}
 
 }
