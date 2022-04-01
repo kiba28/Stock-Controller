@@ -17,11 +17,8 @@ import com.stock.entities.Stock;
 import com.stock.exceptions.ResourceNotFoundException;
 import com.stock.repositories.CategoryRepository;
 import com.stock.repositories.ProductRepository;
-<<<<<<< HEAD:src/main/java/com/stock/services/implementations/ProductServiceImpl.java
 import com.stock.services.ProductService;
-=======
 import com.stock.repositories.StockRepository;
->>>>>>> 2ac3e08e35df1c64b952e5cd0b52bf9abe7385ca:src/main/java/com/stock/services/ProductServiceImpl.java
 
 @Service
 public class ProductServiceImpl implements ProductService {
