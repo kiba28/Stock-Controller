@@ -13,9 +13,11 @@ import org.springframework.stereotype.Service;
 import com.stock.dto.ProductDTO;
 import com.stock.dto.ProductFormDTO;
 import com.stock.entities.Product;
+import com.stock.entities.Stock;
 import com.stock.exceptions.ResourceNotFoundException;
 import com.stock.repositories.CategoryRepository;
 import com.stock.repositories.ProductRepository;
+import com.stock.repositories.StockRepository;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -26,13 +28,23 @@ public class ProductServiceImpl implements ProductService {
 	private CategoryRepository categoryRepository;
 
 	@Autowired
+	private StockRepository stockRepository;
+
+	@Autowired
 	private ModelMapper mapper;
 
 	@Override
 	public ProductDTO saveProduct(ProductFormDTO body) {
 		body.setCategory(categoryRepository.findById(body.getCategoryID())
 				.orElseThrow(() -> new ResourceNotFoundException("Category not found " + body.getCategoryID())));
-		return mapper.map(repository.save(mapper.map(body, Product.class)), ProductDTO.class);
+
+		Product saveProduct = repository.save(mapper.map(body, Product.class));
+		Stock stockSave = new Stock();
+
+		stockSave.setProductId(saveProduct.getId());
+		stockRepository.save(stockSave);
+
+		return mapper.map(saveProduct, ProductDTO.class);
 	}
 
 	@Override
@@ -50,7 +62,6 @@ public class ProductServiceImpl implements ProductService {
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 		product.setName(body.getName());
 		product.setMinStock(body.getMinStock());
-		product.setQuantityStock(body.getQuantityStock());
 		product.setUnity(body.getUnity());
 		product.setPrice(body.getPrice());
 		product.setCategory(categoryRepository.findById(body.getCategoryID())
