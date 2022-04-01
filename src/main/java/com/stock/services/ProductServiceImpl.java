@@ -42,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
 		Stock stockSave = new Stock();
 
 		stockSave.setProductId(saveProduct.getId());
+		stockSave.setStockQuantity(0);
 		stockRepository.save(stockSave);
 
 		return mapper.map(saveProduct, ProductDTO.class);
