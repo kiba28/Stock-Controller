@@ -1,4 +1,4 @@
-package com.stock.services;
+package com.stock.services.implementations;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +20,7 @@ import com.stock.enums.Status;
 import com.stock.exceptions.ResourceNotFoundException;
 import com.stock.repositories.MovementRepository;
 import com.stock.repositories.StockRepository;
+import com.stock.services.MovementService;
 
 @Service
 public class MovementServiceImpl implements MovementService {
@@ -80,7 +81,7 @@ public class MovementServiceImpl implements MovementService {
 	public MovementDTO findById(Long id) {
 		Movement movement = repository.findById(id)
 				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
-		return mapper.map(movement.getId(), MovementDTO.class);
+		return mapper.map(movement, MovementDTO.class);
 
 	}
 
