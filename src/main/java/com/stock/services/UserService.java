@@ -4,14 +4,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.stock.dto.UserDTO;
-import com.stock.dto.UserForm;
+import com.stock.dto.UserFormDTO;
 import com.stock.entities.Role;
 
 public interface UserService {
 
-	UserDTO saveUser(UserForm body);
+	UserDTO saveUser(UserFormDTO body);
 
-	UserDTO updateUser(Long id, UserForm body);
+	UserDTO updateUser(Long id, UserFormDTO body);
 
 	Role saveRole(Role role);
 

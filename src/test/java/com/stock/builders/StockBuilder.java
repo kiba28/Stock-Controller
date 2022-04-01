@@ -6,13 +6,13 @@ public class StockBuilder {
 
 	public static Stock getStock() {
 
-		Stock sto = new Stock();
-		sto.setProductId(1L);
-		sto.setPrice(2.44);
-		sto.setExitPrice(3.22);
-		sto.setStockQuantity(22);
+		Stock stock = new Stock();
+		stock.setProductId(1L);
+		stock.setPrice(2.44);
+		stock.setExitPrice(3.22);
+		stock.setStockQuantity(22);
 
-		return sto;
+		return stock;
 
 	}
 

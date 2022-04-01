@@ -71,7 +71,6 @@ class MovementServiceImplTest {
 	public void shouldNotSaveAnMovementWhenStockIdIsInexistant() {
 
 		Movement mov = MovementBuilder.getMovement();
-		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
 		Stock sto = StockBuilder.getStock();
 		mov.setId(10L);
 
@@ -95,7 +94,7 @@ class MovementServiceImplTest {
 		when(this.stockRepo.save(any(Stock.class))).thenReturn(sto);
 		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
 
-		MovementDTO movDto = this.service.save(movForm);
+		MovementDTO movDto = this.service.updateEntrance(1L, movForm);
 
 		assertThat(movDto.getId()).isNotNull();
 
@@ -105,7 +104,6 @@ class MovementServiceImplTest {
 	public void shouldNotUpadateAnMovementByIdInexistant() {
 
 		Movement mov = MovementBuilder.getMovement();
-		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
 		Stock sto = StockBuilder.getStock();
 
 		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.empty());
@@ -114,7 +112,7 @@ class MovementServiceImplTest {
 		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
 
 		assertThatExceptionOfType(ResourceNotFoundException.class)
-				.isThrownBy(() -> this.service.save(MovementBuilder.getMovementFormDTO()));
+				.isThrownBy(() -> this.service.updateEntrance(_ID_INEXISTANT, MovementBuilder.getMovementFormDTO()));
 	}
 
 	@Test

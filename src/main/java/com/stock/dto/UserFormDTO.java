@@ -3,12 +3,14 @@ package com.stock.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class UserForm {
+public class UserFormDTO {
 
 	@NotBlank(message = "Required field")
 	@Size(min = 6, max = 30)

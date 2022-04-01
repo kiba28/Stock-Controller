@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.dto.RoleToUserForm;
 import com.stock.dto.UserDTO;
-import com.stock.dto.UserForm;
+import com.stock.dto.UserFormDTO;
 import com.stock.entities.Role;
 import com.stock.services.implementations.UserServiceImpl;
 
@@ -30,7 +30,7 @@ public class UserController {
 	private UserServiceImpl userServImpl;
 
 	@PostMapping
-	public ResponseEntity<UserDTO> saveUser(@RequestBody UserForm form) {
+	public ResponseEntity<UserDTO> saveUser(@RequestBody UserFormDTO form) {
 
 		UserDTO user = userServImpl.saveUser(form);
 
@@ -54,7 +54,7 @@ public class UserController {
 	}
 
 	@PutMapping
-	public UserDTO updateUser(@PathVariable Long id, @RequestBody UserForm user) {
+	public UserDTO updateUser(@PathVariable Long id, @RequestBody UserFormDTO user) {
 		return userServImpl.updateUser(id, user);
 
 	}
