@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 		BeanUtils.copyProperties(body, chosenUser, "id");
 		User user = userRepo.save(chosenUser);
 
-		return mapper.map(userRepo.save(mapper.map(chosenUser, User.class)), UserDTO.class);
+		return mapper.map(userRepo.save(mapper.map(user, User.class)), UserDTO.class);
 
 	}
 
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 	public void deleteUser(@PathVariable Long id) {
 		User user = userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 
-		userRepo.deleteById(id);
+		userRepo.delete(user);
 
 	}
 

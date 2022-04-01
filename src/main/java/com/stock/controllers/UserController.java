@@ -34,7 +34,7 @@ public class UserController {
 
 		UserDTO user = userServImpl.saveUser(form);
 
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(user);
 
 	}
 

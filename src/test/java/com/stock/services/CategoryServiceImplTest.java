@@ -30,6 +30,7 @@ import com.stock.dto.CategoryFormDTO;
 import com.stock.entities.Category;
 import com.stock.exceptions.ResourceNotFoundException;
 import com.stock.repositories.CategoryRepository;
+import com.stock.services.implementations.CategoryServiceImpl;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
