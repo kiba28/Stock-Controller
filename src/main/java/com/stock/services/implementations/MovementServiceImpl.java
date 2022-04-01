@@ -81,7 +81,8 @@ public class MovementServiceImpl implements MovementService {
 	public MovementDTO findById(Long id) {
 		Movement movement = repository.findById(id)
 				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
-		return mapper.map(movement.getId(), MovementDTO.class);
+
+		return mapper.map(movement, MovementDTO.class);
 
 	}
 
