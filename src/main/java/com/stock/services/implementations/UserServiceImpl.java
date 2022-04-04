@@ -1,6 +1,9 @@
 package com.stock.services.implementations;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -11,6 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -23,8 +31,11 @@ import com.stock.repositories.RoleRepository;
 import com.stock.repositories.UserRepository;
 import com.stock.services.UserService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
-public class UserServiceImpl implements UserService {
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepo;
@@ -35,8 +46,26 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private ModelMapper mapper;
 
+	private final PasswordEncoder passwordEncoder;
+
+	@Override
+	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+		Optional<User> user1 = userRepo.findByName(name);
+		User user = user1.get();
+		if (user == null) {
+			throw new ResourceNotFoundException("This User doesnt exist in this database");
+		}
+
+		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		user.getRoles().forEach(role -> {
+			authorities.add(new SimpleGrantedAuthority(role.getName()));
+		});
+		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), authorities);
+	}
+
 	@Override
 	public UserDTO saveUser(@Valid UserFormDTO body) {
+		body.setPassword(passwordEncoder.encode(body.getPassword()));
 		return mapper.map(userRepo.save(mapper.map(body, User.class)), UserDTO.class);
 	}
 
