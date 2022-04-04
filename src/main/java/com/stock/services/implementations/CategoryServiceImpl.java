@@ -1,4 +1,4 @@
-package com.stock.services;
+package com.stock.services.implementations;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,10 +10,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.stock.dto.CategoryDTO;
+import com.stock.dto.CategoryFormDTO;
 import com.stock.entities.Category;
-import com.stock.entities.dto.CategoryDTO;
-import com.stock.entities.dto.CategoryFormDTO;
+import com.stock.exceptions.ResourceNotFoundException;
 import com.stock.repositories.CategoryRepository;
+import com.stock.services.CategoryService;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -42,24 +44,22 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public CategoryDTO updateCategory(Long id, CategoryFormDTO body) {
 		Category category = repository.findById(id)
-				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 		category.setName(body.getName());
 		return mapper.map(repository.save(category), CategoryDTO.class);
-
 	}
 
 	@Override
 	public CategoryDTO findById(Long id) {
 		Category category = repository.findById(id)
-				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
-		return mapper.map(repository.save(category), CategoryDTO.class);
-
+				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+		return mapper.map(category, CategoryDTO.class);
 	}
 
 	@Override
 	public void deleteCategory(Long id) {
 		Category category = repository.findById(id)
-				.orElseThrow(() -> new com.stock.exceptions.ResourceNotFoundException("Id not found " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 		repository.delete(category);
 	}
 

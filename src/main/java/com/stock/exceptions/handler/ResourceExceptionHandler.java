@@ -1,4 +1,4 @@
-package com.stock.exceptions;
+package com.stock.exceptions.handler;
 
 import java.time.Instant;
 
@@ -11,6 +11,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.stock.exceptions.DatabaseException;
+import com.stock.exceptions.ResourceNotFoundException;
+import com.stock.exceptions.StandardError;
+import com.stock.exceptions.UpdateNotAllowed;
+import com.stock.exceptions.ValidationError;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -61,6 +67,18 @@ public class ResourceExceptionHandler {
 		err.setTimestamp(Instant.now());
 		err.setStatus(status.value());
 		err.setError("Validation  Exception");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+
+	@ExceptionHandler(UpdateNotAllowed.class)
+	public ResponseEntity<ValidationError> updateNotAllowed(UpdateNotAllowed e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.METHOD_NOT_ALLOWED;
+		ValidationError err = new ValidationError();
+		err.setTimestamp(Instant.now());
+		err.setStatus(status.value());
+		err.setError("Update  Exception");
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
 		return ResponseEntity.status(status).body(err);

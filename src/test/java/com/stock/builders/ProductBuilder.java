@@ -1,8 +1,8 @@
 package com.stock.builders;
 
+import com.stock.dto.ProductDTO;
+import com.stock.dto.ProductFormDTO;
 import com.stock.entities.Product;
-import com.stock.entities.dto.ProductDTO;
-import com.stock.entities.dto.ProductFormDTO;
 
 public final class ProductBuilder {
 	public static Product getProduct() {

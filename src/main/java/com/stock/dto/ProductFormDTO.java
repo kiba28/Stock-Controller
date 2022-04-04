@@ -1,4 +1,4 @@
-package com.stock.entities.dto;
+package com.stock.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
@@ -20,6 +20,8 @@ public class ProductFormDTO {
 	private double price;
 	@NotBlank(message = "Campo Obrigatório")
 	private String unity;
+	@Positive(message = "Estoque deve ser um valor positivo")
+	private double quantityStock;
 	@Positive(message = "Estoque deve ser um valor positivo")
 	private double minStock;
 	private long categoryID;

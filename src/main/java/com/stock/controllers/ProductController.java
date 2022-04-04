@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.stock.entities.dto.ProductDTO;
-import com.stock.entities.dto.ProductFormDTO;
+import com.stock.dto.ProductDTO;
+import com.stock.dto.ProductFormDTO;
 import com.stock.services.ProductService;
 
 @RestController
@@ -72,8 +72,7 @@ public class ProductController {
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long id) {
 
-		ProductDTO dto = productService.findById(id);
-		productService.deleteProduct(dto.getId());
+		productService.deleteProduct(id);
 
 		return ResponseEntity.noContent().build();
 

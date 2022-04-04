@@ -1,4 +1,4 @@
-package com.stock.entities.dto;
+package com.stock.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

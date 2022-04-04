@@ -3,8 +3,8 @@ package com.stock.services;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import com.stock.entities.dto.CategoryDTO;
-import com.stock.entities.dto.CategoryFormDTO;
+import com.stock.dto.CategoryDTO;
+import com.stock.dto.CategoryFormDTO;
 
 public interface CategoryService {
 
