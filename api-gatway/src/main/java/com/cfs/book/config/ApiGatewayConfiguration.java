@@ -22,8 +22,8 @@ public class ApiGatewayConfiguration {
 					     .uri("lb://book-service"))
 				.route(p -> p.path("/movement-service/**")
 					     .uri("lb://movement-service"))
-				.route(p -> p.path("/movement-service/**")
-					     .uri("lb://stock"))
+				.route(p -> p.path("/stock-service/**")
+					     .uri("lb://stock-service"))
 				.build();
 	}
 }
