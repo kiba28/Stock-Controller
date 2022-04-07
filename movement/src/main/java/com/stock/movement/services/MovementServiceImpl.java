@@ -40,9 +40,9 @@ public class MovementServiceImpl implements MovementService {
 	public MovementDTO save(MovementFormDTO body) {
 
 	  	var stock = stockProxy.getStockid(body.getProductId());
-				if(stock == null) {
-					new ResourceNotFoundException("Produto  " + body.getProductId() + " Não existe no estoque!");	
-				} 
+//				if(stock == null) {
+//					throw new ResourceNotFoundException("Produto  " + body.getProductId() + " Não existe no estoque!");	
+//				} 
 
 		stock.setExitPrice(body.getExitPrice());
 		stock.setPrice(body.getPrice());
@@ -50,9 +50,9 @@ public class MovementServiceImpl implements MovementService {
 			stock.entrance(body.getAmount());
 		} else {
 			stock.exit(body.getAmount());
-		}
+		}	
 
-		stockProxy.saveStock(body.getProductId(),body.getPrice(),body.getExitPrice(),body.getAmount());
+		stockProxy.saveStock(stock);
 
 		return mapper.map(repository.save(mapper.map(body, Movement.class)), MovementDTO.class);
 	}
@@ -78,7 +78,7 @@ public class MovementServiceImpl implements MovementService {
 			stock.exit(body.getAmount());
 		}
 
-		stockProxy.saveStock(body.getProductId(),body.getPrice(),body.getExitPrice(),body.getAmount());
+		stockProxy.saveStock(stock);
 
 		return mapper.map(repository.save(mapper.map(body, Movement.class)), MovementDTO.class);
 	}
