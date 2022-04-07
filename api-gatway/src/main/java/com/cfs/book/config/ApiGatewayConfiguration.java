@@ -12,18 +12,13 @@ public class ApiGatewayConfiguration {
 	public RouteLocator gatewayRouter(RouteLocatorBuilder builder) {
 		return builder.routes()
 				.route(p -> p.path("/get")
-				       .filters(f -> f
-				    		   .addRequestHeader("Ola","Claudio")
-				               .addRequestParameter("Ola","Claudio")) 
-				       .uri("http://httpbin.org:80"))
-				.route(p -> p.path("/cambio-service/**")
-						     .uri("lb://cambio-service"))
-				.route(p -> p.path("/book-service/**")
-					     .uri("lb://book-service"))
-				.route(p -> p.path("/movement-service/**")
-					     .uri("lb://movement-service"))
-				.route(p -> p.path("/stock-service/**")
-					     .uri("lb://stock-service"))
+						.filters(f -> f.addRequestHeader("Ola", "Claudio").addRequestParameter("Ola", "Claudio"))
+						.uri("http://httpbin.org:80"))
+				.route(p -> p.path("/product-service/**").uri("lb://product-service"))
+				.route(p -> p.path("/category-service/**").uri("lb://product-service"))
+				.route(p -> p.path("/movement-service/**").uri("lb://movement-service"))
+				.route(p -> p.path("/stock-service/**").uri("lb://stock-service"))
+				
 				.build();
 	}
 }

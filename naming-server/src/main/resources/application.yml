@@ -2,7 +2,7 @@ server:
   port: 8761
 spring:
   application:
-    name: maning-server
+    name: naming-server
 eureka:
   client:
     register-with-eureka: false

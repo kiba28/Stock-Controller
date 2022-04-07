@@ -1,4 +1,4 @@
-package com.stock;
+package com.stock.product;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
@@ -8,15 +8,13 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableFeignClients
-public class StockServiceApplication {
-	
+public class ProductServiceApplication {
 	@Bean
 	public ModelMapper mapper() {
 		return new ModelMapper();
 	}
-
 	public static void main(String[] args) {
-		SpringApplication.run(StockServiceApplication.class, args);
+		SpringApplication.run(ProductServiceApplication.class, args);
 	}
 
 }

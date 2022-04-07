@@ -46,13 +46,12 @@ public class StockController {
 		return ResponseEntity.ok(saved);
 	}
 
-	@GetMapping(path = "/{id}")
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<StockDTO> searchStock(@PathVariable Long id) {
 
 		StockDTO dto = stockService.findById(id);
 
 		return ResponseEntity.ok().body(dto);
-
 	}
 
 }
