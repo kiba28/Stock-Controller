@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 
 import com.stock.product.dto.ProductDTO;
 import com.stock.product.dto.ProductFormDTO;
+import com.stock.product.dto.ProductWithStockDTO;
 
 public interface ProductService {
 
@@ -14,7 +15,7 @@ public interface ProductService {
 
 	ProductDTO updateProduct(Long id, ProductFormDTO body);
 
-	ProductDTO findById(Long id);
+	ProductWithStockDTO findById(Long id);
 
 	void deleteProduct(Long id);
 }

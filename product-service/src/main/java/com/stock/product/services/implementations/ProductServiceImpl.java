@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.stock.product.dto.ProductDTO;
 import com.stock.product.dto.ProductFormDTO;
+import com.stock.product.dto.ProductWithStockDTO;
 import com.stock.product.entities.Product;
 import com.stock.product.exceptions.ResourceNotFoundException;
 import com.stock.product.proxy.StockProxy;
@@ -72,10 +74,17 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ProductDTO findById(Long id) {
+	public ProductWithStockDTO findById(Long id) {
 		Product product = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
-		return mapper.map(product, ProductDTO.class);
+		ResponseEntity<Stock> stockEntity = stockProxy.searchStock(product.getId());
+		Stock stock = stockEntity.getBody();
+		ProductWithStockDTO productStock = mapper.map(product, ProductWithStockDTO.class);
+		productStock.setStockQuantity(stock.getStockQuantity());
+		productStock.setPrice(stock.getPrice());
+		productStock.setExitPrice(stock.getExitPrice());
+		
+		return productStock;
 	}
 
 	@Override
