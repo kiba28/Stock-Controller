@@ -18,5 +18,12 @@ public class ProductDTO implements Serializable {
 	private String name;
 	private String unity;
 	private Category category;
+	
+	public ProductDTO(Product entity){
+		this.id = entity.getId();
+		this.name = entity.getName();
+		this.unity = entity.getUnity();
+	        this.category = entity.getCategory();
+	}
 
 }
