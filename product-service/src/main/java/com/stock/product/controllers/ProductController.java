@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.product.dto.ProductDTO;
 import com.stock.product.dto.ProductFormDTO;
+import com.stock.product.dto.ProductWithStockDTO;
 import com.stock.product.services.ProductService;
 
 @RestController
@@ -65,9 +66,9 @@ public class ProductController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> searchProduct(@PathVariable Long id) {
+	public ResponseEntity<ProductWithStockDTO> searchProduct(@PathVariable Long id) {
 
-		ProductDTO dto = productService.findById(id);
+		ProductWithStockDTO dto = productService.findById(id);
 
 		return ResponseEntity.ok().body(dto);
 

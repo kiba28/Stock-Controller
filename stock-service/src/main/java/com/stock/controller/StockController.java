@@ -27,9 +27,7 @@ public class StockController {
 	@GetMapping
 	public ResponseEntity<Page<StockDTO>> listAllStock(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
-			@RequestParam(value = "direction", defaultValue = "ASC") String direction
-
-	) {
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), "productId");
 
