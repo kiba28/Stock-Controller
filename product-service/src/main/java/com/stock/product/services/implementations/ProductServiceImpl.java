@@ -39,15 +39,22 @@ public class ProductServiceImpl implements ProductService {
 		body.setCategory(categoryRepository.findById(body.getCategoryId())
 				.orElseThrow(() -> new ResourceNotFoundException("Category not found " + body.getCategoryId())));
 
-		Product productSaved = repository.save(mapper.map(body, Product.class));
+	//	Product productSaved = repository.save(mapper.map(body, Product.class));
 
+		Product product = new Product();
+		copyDtoToEntity(body, product);
+	 	product= repository.save(product);
 		Stock stockSaved = new Stock();
 
 		stockSaved.setProductId(productSaved.getId());
 		stockSaved.setStockQuantity(0);
 		stockProxy.saveStock(stockSaved);
+		
+		MovementDTO dto = new MovementDTO(move);
 
-		return mapper.map(productSaved, ProductDTO.class);
+		return dto;
+
+	//	return mapper.map(productSaved, ProductDTO.class);
 	}
 
 	@Override
@@ -83,6 +90,11 @@ public class ProductServiceImpl implements ProductService {
 		Product product = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 		repository.delete(product);
+	}
+	
+	private void copyDtoToEntity(ProductFormDTO dto, Product entity) {
+		entity.setName(dto.getName());
+		entity.setUnity(dto.getUnity());
 	}
 
 }
