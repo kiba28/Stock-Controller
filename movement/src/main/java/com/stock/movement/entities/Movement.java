@@ -22,10 +22,10 @@ public class Movement {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Long productId;
 	private Integer amount;
 	private double price;
 	private double exitPrice;
+	private Long productId;
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	private LocalDateTime createdAt = LocalDateTime.now();
