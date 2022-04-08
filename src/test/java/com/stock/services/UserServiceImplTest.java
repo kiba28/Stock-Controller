@@ -27,14 +27,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.stock.builders.RoleBuilder;
 import com.stock.builders.UserBuilder;
-import com.stock.dto.UserDTO;
-import com.stock.dto.UserFormDTO;
-import com.stock.entities.Role;
-import com.stock.entities.User;
-import com.stock.exceptions.ResourceNotFoundException;
-import com.stock.repositories.RoleRepository;
-import com.stock.repositories.UserRepository;
-import com.stock.services.implementations.UserServiceImpl;
+import com.stock.userservice.dto.UserDTO;
+import com.stock.userservice.dto.UserFormDTO;
+import com.stock.userservice.entities.Role;
+import com.stock.userservice.entities.User;
+import com.stock.userservice.exceptions.ResourceNotFoundException;
+import com.stock.userservice.repositories.RoleRepository;
+import com.stock.userservice.repositories.UserRepository;
+import com.stock.userservice.services.implementations.UserServiceImpl;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)

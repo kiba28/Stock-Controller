@@ -2,9 +2,9 @@ package com.stock.builders;
 
 import java.util.Arrays;
 
-import com.stock.dto.UserDTO;
-import com.stock.dto.UserFormDTO;
-import com.stock.entities.User;
+import com.stock.userservice.dto.UserDTO;
+import com.stock.userservice.dto.UserFormDTO;
+import com.stock.userservice.entities.User;
 
 public class UserBuilder {
 	public static User getUser() {

@@ -1,6 +1,6 @@
 package com.stock.builders;
 
-import com.stock.entities.Role;
+import com.stock.userservice.entities.Role;
 
 public class RoleBuilder {
 	public static Role getRole() {
