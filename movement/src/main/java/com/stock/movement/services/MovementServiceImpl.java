@@ -19,7 +19,7 @@ import com.stock.movement.enums.Status;
 import com.stock.movement.exceptions.ResourceNotFoundException;
 import com.stock.movement.proxy.StockProxy;
 import com.stock.movement.repository.MovementRepository;
-
+import com.stock.movement.response.Stock;
 
 @Service
 public class MovementServiceImpl implements MovementService {
@@ -27,9 +27,6 @@ public class MovementServiceImpl implements MovementService {
 	@Autowired
 	private MovementRepository repository;
 
-//	@Autowired
-//	private StockRepository stockRepository;
-	
 	@Autowired
 	private StockProxy stockProxy;
 
@@ -39,22 +36,27 @@ public class MovementServiceImpl implements MovementService {
 	@Override
 	public MovementDTO save(MovementFormDTO body) {
 
-	  	var stock = stockProxy.getStockid(body.getProductId());
-				if(stock == null) {
-					new ResourceNotFoundException("Produto  " + body.getProductId() + " Não existe no estoque!");	
-				} 
-
+		Stock stock = stockProxy.getStockid(body.getProductId());
 		stock.setExitPrice(body.getExitPrice());
 		stock.setPrice(body.getPrice());
 		if (body.getStatus() == Status.ENTRANCE) {
 			stock.entrance(body.getAmount());
-		} else {
+		} else if (stock.getStockQuantity() > body.getAmount()) {
 			stock.exit(body.getAmount());
-		}
+		} else
+			throw new ResourceNotFoundException("Produto  " + body.getProductId() + " Não tem o estoque Solicitado! "
+					+ body.getAmount() + " Existe " + stock.getStockQuantity());
 
-		stockProxy.saveStock(body.getProductId(),body.getPrice(),body.getExitPrice(),body.getAmount());
+		stockProxy.saveStock(stock);
+		Movement move = new Movement();
 
-		return mapper.map(repository.save(mapper.map(body, Movement.class)), MovementDTO.class);
+		copyDtoToEntity(body, move);
+
+		move = repository.save(move);
+
+		MovementDTO dto = new MovementDTO(move);
+
+		return dto;
 	}
 
 	@Override
@@ -62,9 +64,9 @@ public class MovementServiceImpl implements MovementService {
 		Movement movement = repository.findById(id)
 				.orElseThrow(() -> new com.stock.movement.exceptions.ResourceNotFoundException("Id not found " + id));
 		var stock = stockProxy.getStockid(body.getProductId());
-		if(stock == null) {
-			new ResourceNotFoundException("Produto  " + body.getProductId() + " Não existe no estoque!");	
-		} 
+		if (stock == null) {
+			throw new ResourceNotFoundException("Produto  " + body.getProductId() + " Não existe no estoque!");
+		}
 		if (movement.getStatus() == Status.ENTRANCE) {
 			stock.exit(movement.getAmount());
 		} else {
@@ -78,7 +80,7 @@ public class MovementServiceImpl implements MovementService {
 			stock.exit(body.getAmount());
 		}
 
-		stockProxy.saveStock(body.getProductId(),body.getPrice(),body.getExitPrice(),body.getAmount());
+		stockProxy.saveStock(stock);
 
 		return mapper.map(repository.save(mapper.map(body, Movement.class)), MovementDTO.class);
 	}
@@ -96,9 +98,9 @@ public class MovementServiceImpl implements MovementService {
 		Movement movement = repository.findById(id)
 				.orElseThrow(() -> new com.stock.movement.exceptions.ResourceNotFoundException("Id not found " + id));
 		var stock = stockProxy.getStockid(movement.getProductId());
-		if(stock == null) {
-			new ResourceNotFoundException("Produto  " + movement.getProductId() + " Não existe no estoque!");	
-		} 
+		if (stock == null) {
+			new ResourceNotFoundException("Produto  " + movement.getProductId() + " Não existe no estoque!");
+		}
 		if (movement.getStatus() == Status.ENTRANCE) {
 			stock.exit(movement.getAmount());
 		} else {
@@ -119,4 +121,11 @@ public class MovementServiceImpl implements MovementService {
 		return new PageImpl<>(list);
 	}
 
+	private void copyDtoToEntity(MovementFormDTO dto, Movement entity) {
+		entity.setProductId(dto.getProductId());
+		entity.setPrice(dto.getPrice());
+		entity.setExitPrice(dto.getExitPrice());
+		entity.setAmount(dto.getAmount());
+		entity.setStatus(dto.getStatus());
+	}
 }

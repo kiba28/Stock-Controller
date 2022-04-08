@@ -32,7 +32,7 @@ public class MovementController {
 
 		MovementDTO saved = movementService.save(entrance);
 
-		return ResponseEntity.ok(saved);
+		return ResponseEntity.ok().body(saved);
 	}
 
 	@GetMapping
