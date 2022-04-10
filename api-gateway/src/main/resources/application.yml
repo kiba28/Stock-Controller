@@ -7,9 +7,43 @@ eureka:
 spring:
   application:
     name: api-gateway
- # cloud:
-   # gateway:
-     # discovery:
-       # locator:
-         # enabled: true
-         # lower-case-service-id: true 
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+      - id: movement-service
+        uri: lb://movement-service
+        predicates:
+        - Path=/movement-service/**
+        filters:
+        - RemoveRequestHeader=Cookie,Set-Cookie
+        - StripPrefix=1
+      - id: stock-service
+        uri: lb://stock-service
+        predicates:
+        - Path=/stock-service/**
+        filters:
+        - RemoveRequestHeader=Cookie,Set-Cookie
+        - StripPrefix=1
+      - id: product-service
+        uri: lb://product-service
+        predicates:
+        - Path=/product-service/**
+        - Path=/category-service/**
+        filters:
+        - RemoveRequestHeader=Cookie,Set-Cookie
+        - StripPrefix=1
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/ourrealm
+            jwk-set-uri: http://localhost:8080/realms/ourrealm/protocol/openid-connect/certs
+            authorization-uri: http://localhost:8080/realms/ourrealm/protocol/openid-connect/auth
+            token-uri: http://localhost:8080/realms/ourrealm/protocol/openid-connect/token
+              
+         

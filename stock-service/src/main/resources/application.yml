@@ -28,3 +28,24 @@ spring:
     schemas: stock-service
     user: root
     password: root
+    
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/ourrealm
+          jwk-set-uri: http://localhost:8080/realms/ourrealm/protocol/openid-connect/certs
+          
+
+
+
+      client:
+        registration:
+         keycloak: # <--- It's your custom client. I am using keycloak
+            client-id: myclient1
+            authorization-grant-type: password
+            scope: openid # your scopes
+        provider:
+          keycloak: # <--- Here Registered my custom provider
+            authorization-uri: http://localhost:8080/realms/ourrealm/protocol/openid-connect/auth
+            token-uri: http://localhost:8080/realms/ourrealm/protocol/openid-connect/token
