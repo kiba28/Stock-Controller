@@ -3,6 +3,7 @@ package com.stock.product.dto;
 import java.io.Serializable;
 
 import com.stock.product.entities.Category;
+import com.stock.product.entities.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

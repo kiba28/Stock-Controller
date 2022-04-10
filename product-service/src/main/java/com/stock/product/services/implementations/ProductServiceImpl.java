@@ -45,14 +45,14 @@ public class ProductServiceImpl implements ProductService {
 
 		Product product = new Product();
 		copyDtoToEntity(body, product);
-	 	product= repository.save(product);
+	 	Product productSaved = repository.save(product);
 		Stock stockSaved = new Stock();
 
 		stockSaved.setProductId(productSaved.getId());
 		stockSaved.setStockQuantity(0);
 		stockProxy.saveStock(stockSaved);
 		
-		MovementDTO dto = new MovementDTO(move);
+		ProductDTO dto = new ProductDTO(productSaved);
 
 		return dto;
 
