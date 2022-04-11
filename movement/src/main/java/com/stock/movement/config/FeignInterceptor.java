@@ -1,4 +1,4 @@
-package com.stock.product.config;
+package com.stock.movement.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,22 +9,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.stock.product.dto.CredentialsDTO;
+import com.stock.movement.dto.CredentialsDTO;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
 @Configuration
 public class FeignInterceptor {
-	
+
 	@Autowired
 	private ModelMapper mapper;
 	
 	@Bean
 	public RequestInterceptor getFeignInterceptor() {
-		
+
 		return new RequestInterceptor() {
-			
+
 			@Override
 			public void apply(RequestTemplate template) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -38,7 +38,7 @@ public class FeignInterceptor {
 			
 			}
 		};
-		
+
 	}
 
 }

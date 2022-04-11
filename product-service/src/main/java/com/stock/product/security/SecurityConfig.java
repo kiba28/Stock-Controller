@@ -12,10 +12,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.mvcMatcher("/product-service/**").authorizeRequests()
-		    .mvcMatchers("/product-service/**").authenticated().and()
-		    .mvcMatcher("/category-service/**").authorizeRequests()
-		    .mvcMatchers("/category-service/**").authenticated().and()
+		http.authorizeRequests()
+		.mvcMatchers("/category-service/**").hasAuthority("SCOPE_offline_access")
+		.mvcMatchers("/product-service/**").hasAuthority("SCOPE_offline_access")
+		.and()
 		    .oauth2ResourceServer()
 		    .jwt();
 

@@ -16,14 +16,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.mvcMatcher("/movement-service/**")
 			.authorizeRequests()
-			.mvcMatchers("/movement-service/**").access("hasAuthority('offline_access')").and()
+			.mvcMatchers("/movement-service/**").hasAuthority("admin").and()
 			.oauth2ResourceServer()
 			.jwt();
 //			      .jwtAuthenticationConverter(getJwtAuthenticationConverter());
 	}
-//	
+	
 //	JwtAuthenticationConverter getJwtAuthenticationConverter() {
 //		
 //		JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();

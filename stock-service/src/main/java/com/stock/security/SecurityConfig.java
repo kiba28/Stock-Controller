@@ -14,7 +14,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http
 			.mvcMatcher("/stock-service/**")
 			.authorizeRequests()
-			.mvcMatchers("/stock-service/**").authenticated().and()
+			.mvcMatchers("/stock-service/**").hasAuthority("SCOPE_offline_access").and()
 			.oauth2ResourceServer()
 			.jwt();
 	}
