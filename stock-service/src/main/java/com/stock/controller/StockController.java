@@ -1,5 +1,7 @@
 package com.stock.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +39,7 @@ public class StockController {
 	}
 
 	@PostMapping
-	public ResponseEntity<StockDTO> saveStock(@RequestBody StockFormDTO stock) {
+	public ResponseEntity<StockDTO> saveStock(@RequestBody @Valid StockFormDTO stock) {
 
 		StockDTO saved = stockService.save(stock);
 

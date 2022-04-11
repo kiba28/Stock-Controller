@@ -1,5 +1,7 @@
 package com.stock.movement.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +30,7 @@ public class MovementController {
 	private MovementService movementService;
 
 	@PostMapping
-	public ResponseEntity<MovementDTO> saveEntrance(@RequestBody MovementFormDTO entrance) {
+	public ResponseEntity<MovementDTO> saveEntrance(@RequestBody @Valid MovementFormDTO entrance) {
 
 		MovementDTO saved = movementService.save(entrance);
 
@@ -51,7 +53,7 @@ public class MovementController {
 	}
 
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<MovementDTO> updateEntrance(@PathVariable Long id, @RequestBody MovementFormDTO entrance) {
+	public ResponseEntity<MovementDTO> updateEntrance(@PathVariable Long id, @RequestBody @Valid MovementFormDTO entrance) {
 
 		MovementDTO prod = movementService.updateEntrance(id, entrance);
 

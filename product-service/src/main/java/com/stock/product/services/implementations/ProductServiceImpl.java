@@ -3,6 +3,9 @@ package com.stock.product.services.implementations;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,26 +40,22 @@ public class ProductServiceImpl implements ProductService {
 	private ModelMapper mapper;
 
 	@Override
+	@Transactional
 	public ProductDTO saveProduct(ProductFormDTO body) {
-		body.setCategory(categoryRepository.findById(body.getCategoryId())
-				.orElseThrow(() -> new ResourceNotFoundException("Category not found " + body.getCategoryId())));
-
-	//	Product productSaved = repository.save(mapper.map(body, Product.class));
-
-		Product product = new Product();
-		copyDtoToEntity(body, product);
-	 	product= repository.save(product);
-		Stock stockSaved = new Stock();
-
-		stockSaved.setProductId(productSaved.getId());
-		stockSaved.setStockQuantity(0);
-		stockProxy.saveStock(stockSaved);
 		
-		MovementDTO dto = new MovementDTO(move);
+		body.setCategory(categoryRepository.findById(body.getCategoryID())
+				.orElseThrow(() -> new ResourceNotFoundException("Category not found " + body.getCategoryID())));
 
-		return dto;
-
-	//	return mapper.map(productSaved, ProductDTO.class);
+		Product entity = new Product();
+		copyDtoToEntity(body, entity);
+		repository.save(entity);
+		Stock stockSave = new Stock();
+		
+		stockSave.setProductId(entity.getId());
+		stockSave.setStockQuantity(0);
+		stockProxy.saveStock(stockSave);
+		
+		return new ProductDTO(entity);
 	}
 
 	@Override
@@ -70,15 +69,17 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public ProductDTO updateProduct(Long id, ProductFormDTO body) {
-		Product product = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
-		product.setName(body.getName());
-		product.setUnity(body.getUnity());
-		product.setCategory(categoryRepository.findById(body.getCategoryId())
-				.orElseThrow(() -> new ResourceNotFoundException("Category not found " + body.getCategoryId())));
-
-		return mapper.map(repository.save(product), ProductDTO.class);
-	}
+		try {
+			Product entity = repository.getById(id);
+			copyDtoToEntity(body,entity);
+			
+			entity = repository.save(entity);
+			return new ProductDTO(entity);
+			}
+			catch (EntityNotFoundException e) {
+				throw new ResourceNotFoundException("id not found " + id);
+			}
+		}
 
 	@Override
 	public ProductWithStockDTO findById(Long id) {
@@ -104,6 +105,9 @@ public class ProductServiceImpl implements ProductService {
 	private void copyDtoToEntity(ProductFormDTO dto, Product entity) {
 		entity.setName(dto.getName());
 		entity.setUnity(dto.getUnity());
+		entity.setCategory(dto.getCategory());
+	
+		
 	}
 
 }

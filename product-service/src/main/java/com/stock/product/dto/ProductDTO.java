@@ -3,6 +3,7 @@ package com.stock.product.dto;
 import java.io.Serializable;
 
 import com.stock.product.entities.Category;
+import com.stock.product.entities.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,13 +18,13 @@ public class ProductDTO implements Serializable {
 	private Long id;
 	private String name;
 	private String unity;
-
 	private Category category;
 	
 	public ProductDTO(Product entity){
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.unity = entity.getUnity();
-	  this.category = entity.getCategory();
+		this.category = entity.getCategory();
 	}
+	
 }
