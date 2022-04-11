@@ -34,16 +34,4 @@ spring:
         - Path=/product-service/**
         - Path=/category-service/**
         filters:
-        - RemoveRequestHeader=Cookie,Set-Cookie
-        - StripPrefix=1
-  security:
-    oauth2:
-      client:
-        provider:
-          keycloak:
-            issuer-uri: http://localhost:8080/realms/ourrealm
-            jwk-set-uri: http://localhost:8080/realms/ourrealm/protocol/openid-connect/certs
-            authorization-uri: http://localhost:8080/realms/ourrealm/protocol/openid-connect/auth
-            token-uri: http://localhost:8080/realms/ourrealm/protocol/openid-connect/token
-              
-         
+        - PreserveHostHeader

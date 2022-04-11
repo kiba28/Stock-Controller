@@ -4,7 +4,7 @@
 //import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
-//
+
 //@Configuration
 //public class ApiGatewayConfiguration {
 //
@@ -26,7 +26,7 @@
 //				.route(p -> p.path("/stock-service/**")
 //						.filters(f -> f.removeRequestHeader("Cookie").removeRequestHeader("Set-Cookie").stripPrefix(1))
 //						.uri("lb://stock-service"))
-////				.route(p -> p.path("/user/**", "/login").uri("lb://user"))
+//				.route(p -> p.path("/user/**", "/login").uri("lb://user"))
 //				.build();
 //	}
 //}
