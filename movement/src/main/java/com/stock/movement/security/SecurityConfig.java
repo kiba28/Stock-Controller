@@ -17,21 +17,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-			.mvcMatchers("/movement-service/**").hasAuthority("admin").and()
+			.mvcMatchers("/movement-service/**").hasAuthority("func").and()
 			.oauth2ResourceServer()
-			.jwt();
-//			      .jwtAuthenticationConverter(getJwtAuthenticationConverter());
+			.jwt()
+			      .jwtAuthenticationConverter(getJwtAuthenticationConverter());
 	}
 	
-//	JwtAuthenticationConverter getJwtAuthenticationConverter() {
-//		
-//		JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
-//		converter.setAuthoritiesClaimName("authorities");
-//		converter.setAuthorityPrefix("");
-//		JwtAuthenticationConverter authenticationConverter = new JwtAuthenticationConverter();
-//		authenticationConverter.setJwtGrantedAuthoritiesConverter(converter);
-//		return authenticationConverter;
-//		
-//	}
+	JwtAuthenticationConverter getJwtAuthenticationConverter() {
+		
+		JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
+		converter.setAuthoritiesClaimName("authorities");
+		converter.setAuthorityPrefix("");
+		JwtAuthenticationConverter authenticationConverter = new JwtAuthenticationConverter();
+		authenticationConverter.setJwtGrantedAuthoritiesConverter(converter);
+		return authenticationConverter;
+		
+	}
 
 }
