@@ -28,3 +28,11 @@ spring:
     schemas: movement-service
     user: root
     password: root  
+    
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/ourrealm
+          jwk-set-uri: http://localhost:8080/realms/ourrealm/protocol/openid-connect/certs
+

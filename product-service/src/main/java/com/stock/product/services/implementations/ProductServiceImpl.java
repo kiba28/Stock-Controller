@@ -43,16 +43,16 @@ public class ProductServiceImpl implements ProductService {
 
 	//	Product productSaved = repository.save(mapper.map(body, Product.class));
 
-		Product product = new Product();
-		copyDtoToEntity(body, product);
-	 	product= repository.save(product);
+		Product entity = new Product();
+		copyDtoToEntity(body, entity);
+	 	Product productSaved = repository.save(entity);
 		Stock stockSaved = new Stock();
 
 		stockSaved.setProductId(productSaved.getId());
 		stockSaved.setStockQuantity(0);
 		stockProxy.saveStock(stockSaved);
 		
-		MovementDTO dto = new MovementDTO(move);
+		ProductDTO dto = new ProductDTO(productSaved);
 
 		return dto;
 
@@ -104,6 +104,8 @@ public class ProductServiceImpl implements ProductService {
 	private void copyDtoToEntity(ProductFormDTO dto, Product entity) {
 		entity.setName(dto.getName());
 		entity.setUnity(dto.getUnity());
+		entity.setCategory(dto.getCategory());
+		
 	}
 
 }
