@@ -2,6 +2,7 @@ package com.stock.product.proxy;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,4 +19,7 @@ public interface StockProxy {
 	
 	@PostMapping(value = "/stock-service")
 	public ResponseEntity<Stock> saveStock(@RequestBody Stock stock);
+	
+	@DeleteMapping(value = "/stock-service/{id}")
+	public ResponseEntity<Object> deleteStock(@PathVariable Long id);
 }

@@ -98,6 +98,8 @@ public class ProductServiceImpl implements ProductService {
 	public void deleteProduct(Long id) {
 		Product product = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+		
+		stockProxy.deleteStock(id);
 		repository.delete(product);
 	}
 	

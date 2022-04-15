@@ -48,4 +48,13 @@ public class StockServiceImpl implements StockService {
 		return new PageImpl<>(list);
 	}
 
+	@Override
+	public void delete(Long id) {
+		Stock stock = stockRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+		if (stock.getStockQuantity() == 0) {
+			stockRepository.deleteById(id);
+		}
+		throw new ResourceNotFoundException("Cannot delete stock with products in it. Still " + stock.getStockQuantity() + "products in stock.");
+	}
 }
