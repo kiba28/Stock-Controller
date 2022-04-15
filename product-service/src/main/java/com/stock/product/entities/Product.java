@@ -15,14 +15,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class Product {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	private double price;
 	private String unity;
-	@JsonIgnore
+	private double minStock;
+
 	@ManyToOne
+	@JsonIgnore
 	private Category category;
 
 }

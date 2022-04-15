@@ -4,6 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.stock.product.entities.Category;
+import com.stock.product.entities.Product;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,13 @@ public class ProductFormDTO {
 	private String name;
 	@NotBlank(message = "Campo Obrigatório")
 	private String unity;
-	private long categoryId;
+	
+	private long categoryID;
 	private Category category;
+	
+	public ProductFormDTO(Product entity){
+		this.name = entity.getName();
+		this.unity = entity.getUnity();
+	}
+	
 }
