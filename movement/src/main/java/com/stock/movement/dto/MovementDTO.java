@@ -3,11 +3,13 @@ package com.stock.movement.dto;
 import com.stock.movement.entities.Movement;
 import com.stock.movement.enums.Status;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class MovementDTO {
 
 	private Long id;
@@ -25,4 +27,6 @@ public class MovementDTO {
 		this.productId = entity.getProductId();
 		this.status = entity.getStatus();
 	}
+
+	
 }

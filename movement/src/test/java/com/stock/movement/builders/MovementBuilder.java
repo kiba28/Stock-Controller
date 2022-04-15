@@ -46,7 +46,7 @@ public final class MovementBuilder {
 		mov.setProductId(1L);
 		mov.setAmount(1);
 		mov.setPrice(2.55);
-		mov.setExitPrice(2.57);
+		mov.setPercentage(2.57);
 		mov.setStatus(Status.EXIT);
 
 		return mov;

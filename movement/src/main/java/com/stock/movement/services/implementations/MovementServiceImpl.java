@@ -38,10 +38,15 @@ public class MovementServiceImpl implements MovementService {
 	public MovementDTO save(MovementFormDTO body) {
 
 		Stock stock = stockProxy.getStockid(body.getProductId());
-		stock.setExitPrice(body.getExitPrice());
-		stock.setPrice(body.getPrice());
+		
+		Movement move = new Movement();
+		copyDtoToEntity(body, move);
+		
 		if (body.getStatus() == Status.ENTRANCE) {
 			stock.entrance(body.getAmount());
+			double valor = move.percenctagePrice(body.getPercentage());
+			stock.setExitPrice(valor);
+			stock.setPrice(body.getPrice());
 		} else if (stock.getStockQuantity() >= body.getAmount()) {
 			stock.exit(body.getAmount());
 		} else
@@ -49,9 +54,6 @@ public class MovementServiceImpl implements MovementService {
 					+ body.getAmount() + " Existe " + stock.getStockQuantity());
 
 		stockProxy.saveStock(stock);
-		Movement move = new Movement();
-
-		copyDtoToEntity(body, move);
 
 		move = repository.save(move);
 
@@ -73,7 +75,7 @@ public class MovementServiceImpl implements MovementService {
 		} else {
 			stock.entrance(movement.getAmount());
 		}
-		stock.setExitPrice(body.getExitPrice());
+		stock.setExitPrice(movement.percenctagePrice(body.getPercentage()));
 		stock.setPrice(body.getPrice());
 		if (body.getStatus() == Status.ENTRANCE) {
 			stock.entrance(body.getAmount());
@@ -125,8 +127,9 @@ public class MovementServiceImpl implements MovementService {
 	private void copyDtoToEntity(MovementFormDTO dto, Movement entity) {
 		entity.setProductId(dto.getProductId());
 		entity.setPrice(dto.getPrice());
-		entity.setExitPrice(dto.getExitPrice());
+		entity.setExitPrice(entity.percenctagePrice(dto.getPercentage()));
 		entity.setAmount(dto.getAmount());
 		entity.setStatus(dto.getStatus());
 	}
+	
 }

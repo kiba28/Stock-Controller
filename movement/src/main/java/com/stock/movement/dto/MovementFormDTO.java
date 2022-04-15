@@ -18,10 +18,16 @@ public class MovementFormDTO {
 	private Integer amount;
 	@NotNull
 	private double price;
+//	@NotNull
+//	private double exitPrice;
 	@NotNull
-	private double exitPrice;
+	private double percentage;
 	@NotNull
 	private Long productId;
 	private Status status;
+	
+	public MovementFormDTO(MovementDTO entity) {
+		
+	}
 	
 }
