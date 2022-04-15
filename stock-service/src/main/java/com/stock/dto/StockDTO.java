@@ -11,4 +11,5 @@ public class StockDTO {
 	private double price;
 	private double exitPrice;
 	private int stockQuantity;
+	
 }

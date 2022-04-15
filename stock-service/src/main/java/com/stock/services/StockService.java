@@ -14,4 +14,6 @@ public interface StockService {
 	
 	Page<StockDTO> listStock(Pageable paginacao);
 
+	void delete(Long id);
+
 }

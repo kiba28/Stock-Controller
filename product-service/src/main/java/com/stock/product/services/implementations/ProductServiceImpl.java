@@ -42,18 +42,18 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	@Transactional
 	public ProductDTO saveProduct(ProductFormDTO body) {
-		
-		body.setCategory(categoryRepository.findById(body.getCategoryID())
-				.orElseThrow(() -> new ResourceNotFoundException("Category not found " + body.getCategoryID())));
+        
+		body.setCategory(categoryRepository.findById(body.getCategoryId())
+				.orElseThrow(() -> new ResourceNotFoundException("Category not found " + body.getCategoryId())));
 
 		Product entity = new Product();
 		copyDtoToEntity(body, entity);
-		repository.save(entity);
-		Stock stockSave = new Stock();
-		
-		stockSave.setProductId(entity.getId());
-		stockSave.setStockQuantity(0);
-		stockProxy.saveStock(stockSave);
+	 	repository.save(entity);
+		Stock stockSaved = new Stock();
+        
+		stockSaved.setProductId(entity.getId());
+		stockSaved.setStockQuantity(0);
+		stockProxy.saveStock(stockSaved);
 		
 		return new ProductDTO(entity);
 	}
@@ -99,6 +99,8 @@ public class ProductServiceImpl implements ProductService {
 	public void deleteProduct(Long id) {
 		Product product = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+		
+		stockProxy.deleteStock(id);
 		repository.delete(product);
 	}
 	
@@ -106,8 +108,6 @@ public class ProductServiceImpl implements ProductService {
 		entity.setName(dto.getName());
 		entity.setUnity(dto.getUnity());
 		entity.setCategory(dto.getCategory());
-	
-		
 	}
 
 }
