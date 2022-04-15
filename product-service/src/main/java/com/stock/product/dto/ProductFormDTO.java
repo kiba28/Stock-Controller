@@ -19,7 +19,7 @@ public class ProductFormDTO {
 	@NotBlank(message = "Campo Obrigatório")
 	private String unity;
 	
-	private long categoryID;
+	private long categoryId;
 	private Category category;
 	
 	public ProductFormDTO(Product entity){
