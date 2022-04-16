@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -55,6 +56,17 @@ public class StockServiceImpl implements StockService {
 		if (stock.getStockQuantity() == 0) {
 			stockRepository.deleteById(id);
 		}
-		throw new ResourceNotFoundException("Cannot delete stock with products in it. Still " + stock.getStockQuantity() + "products in stock.");
+		throw new ResourceNotFoundException(
+				"Cannot delete stock with products in it. Still " + stock.getStockQuantity() + "products in stock.");
 	}
+
+	@Override
+	public StockDTO update(Long id, StockFormDTO body) {
+		Stock stock = stockRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+
+		BeanUtils.copyProperties(body, stock, "id");
+		return mapper.map(stockRepository.save(stock), StockDTO.class);
+	}
+
 }
