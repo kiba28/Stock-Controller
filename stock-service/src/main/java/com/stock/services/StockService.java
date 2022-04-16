@@ -16,4 +16,6 @@ public interface StockService {
 
 	void delete(Long id);
 
+	StockDTO update(Long id, StockFormDTO body);
+
 }
