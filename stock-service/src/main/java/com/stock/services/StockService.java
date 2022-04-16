@@ -10,7 +10,7 @@ public interface StockService {
 
 	StockDTO save(StockFormDTO body);
 	
-	StockDTO findById(Long id);
+	StockDTO findByIdStock(Long id);
 	
 	Page<StockDTO> listStock(Pageable paginacao);
 

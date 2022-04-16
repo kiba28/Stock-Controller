@@ -1,10 +1,10 @@
 package com.stock.movement.services.implementations;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -42,7 +42,8 @@ public class MovementServiceImpl implements MovementService {
 		Stock stock = stockProxy.getStockid(body.getProductId());
 		
 		Movement move = new Movement();
-		copyDtoToEntity(body, move);
+	//	BeanUtils.copyProperties(body, move,"productId");
+	    copyDtoToEntity(body, move);
 		
 		stock.entrance(body.getAmount());
 		double valor =(move.percenctagePrice((body.getPercentage()* move.getPrice())/100)*move.getPrice());
@@ -50,7 +51,7 @@ public class MovementServiceImpl implements MovementService {
 		stock.setPrice(body.getPrice());
 		
 		
-		stockProxy.saveStock(stock);
+		stockProxy.updateStock(body.getProductId(), stock);
 
 		move.setStatus(Status.ENTRANCE);
 		move = repository.save(move);
@@ -66,12 +67,14 @@ public class MovementServiceImpl implements MovementService {
        Stock stock = stockProxy.getStockid(body.getProductId());
 		
 		Movement move = new Movement();
-		copyDtoToEntityExit(body, move);
+		
+		BeanUtils.copyProperties(body, move,"productId");
+		//copyDtoToEntityExit(body, move);
 		
 		stock.exit(body.getAmount());
 		
 		
-		stockProxy.saveStock(stock);
+		stockProxy.updateStock(body.getProductId(),stock);
 
 		move.setStatus(Status.EXIT);
 		move = repository.save(move);
@@ -102,7 +105,7 @@ public class MovementServiceImpl implements MovementService {
 			stock.exit(body.getAmount());
 		}
 
-		stockProxy.saveStock(stock);
+		stockProxy.updateStock(body.getProductId(),stock);
 
 		return mapper.map(repository.save(mapper.map(body, Movement.class)), MovementDTO.class);
 	}

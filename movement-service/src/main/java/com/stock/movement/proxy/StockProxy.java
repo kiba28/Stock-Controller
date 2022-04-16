@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.stock.movement.response.Stock;
@@ -18,8 +18,8 @@ public interface StockProxy {
 	@GetMapping(value = "/stock-service/{productId}")
 	public Stock getStockid(
 			@PathVariable("productId") Long productId);
-
-	@PostMapping(value = "/stock-service")
-	public ResponseEntity<Stock> saveStock(@RequestBody Stock stock);
+	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<Stock> updateStock(@PathVariable Long id, @RequestBody Stock body);
 
 }
