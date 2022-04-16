@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.stock.movement.dto.MovementDTO;
 import com.stock.movement.dto.MovementFormDTO;
+import com.stock.movement.dto.MovementFormExitDTO;
 import com.stock.movement.entities.Movement;
 import com.stock.movement.enums.Status;
 import com.stock.movement.exceptions.ResourceNotFoundException;
@@ -40,25 +42,45 @@ public class MovementServiceImpl implements MovementService {
 		Stock stock = stockProxy.getStockid(body.getProductId());
 		
 		Movement move = new Movement();
-		copyDtoToEntity(body, move);
+	//	BeanUtils.copyProperties(body, move,"productId");
+	    copyDtoToEntity(body, move);
 		
-		if (body.getStatus() == Status.ENTRANCE) {
-			stock.entrance(body.getAmount());
-			double valor = move.percenctagePrice(body.getPercentage());
-			stock.setExitPrice(valor);
-			stock.setPrice(body.getPrice());
-		} else if (stock.getStockQuantity() >= body.getAmount()) {
-			stock.exit(body.getAmount());
-		} else
-			throw new ResourceNotFoundException("Produto  " + body.getProductId() + " Não tem o estoque Solicitado! "
-					+ body.getAmount() + " Existe " + stock.getStockQuantity());
+		stock.entrance(body.getAmount());
+		double valor =(move.percenctagePrice((body.getPercentage()* move.getPrice())/100)*move.getPrice());
+		stock.setExitPrice(valor);
+		stock.setPrice(body.getPrice());
+		
+		
+		stockProxy.updateStock(body.getProductId(), stock);
 
-		stockProxy.saveStock(stock);
-
+		move.setStatus(Status.ENTRANCE);
 		move = repository.save(move);
 
 		MovementDTO dto = new MovementDTO(move);
+		dto.setTotal(move.getPrice()*move.getAmount());
+		
+		return dto;
+	}
+	
+	@Override
+	public MovementDTO saveExit(MovementFormExitDTO body) {
+       Stock stock = stockProxy.getStockid(body.getProductId());
+		
+		Movement move = new Movement();
+		
+		BeanUtils.copyProperties(body, move,"productId");
+		//copyDtoToEntityExit(body, move);
+		
+		stock.exit(body.getAmount());
+		
+		
+		stockProxy.updateStock(body.getProductId(),stock);
 
+		move.setStatus(Status.EXIT);
+		move = repository.save(move);
+
+		MovementDTO dto = new MovementDTO(move);
+		dto.setTotal(move.getExitPrice()*move.getAmount());
 		return dto;
 	}
 
@@ -83,7 +105,7 @@ public class MovementServiceImpl implements MovementService {
 			stock.exit(body.getAmount());
 		}
 
-		stockProxy.saveStock(stock);
+		stockProxy.updateStock(body.getProductId(),stock);
 
 		return mapper.map(repository.save(mapper.map(body, Movement.class)), MovementDTO.class);
 	}
@@ -131,5 +153,15 @@ public class MovementServiceImpl implements MovementService {
 		entity.setAmount(dto.getAmount());
 		entity.setStatus(dto.getStatus());
 	}
+	
+	private void copyDtoToEntityExit(MovementFormExitDTO dto, Movement entity) {
+		Stock stock = stockProxy.getStockid(dto.getProductId());
+		entity.setProductId(dto.getProductId());
+		entity.setPrice(stock.getPrice());
+		entity.setExitPrice(stock.getExitPrice());
+		entity.setAmount(dto.getAmount());
+		entity.setStatus(Status.EXIT);
+	}
+
 	
 }

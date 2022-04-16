@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.movement.dto.MovementDTO;
 import com.stock.movement.dto.MovementFormDTO;
+import com.stock.movement.dto.MovementFormExitDTO;
 import com.stock.movement.services.MovementService;
 
 @RestController
@@ -33,6 +34,14 @@ public class MovementController {
 	public ResponseEntity<MovementDTO> saveEntrance(@RequestBody @Valid MovementFormDTO entrance) {
 
 		MovementDTO saved = movementService.save(entrance);
+
+		return ResponseEntity.ok().body(saved);
+	}
+	
+	@PostMapping(path = "/exit")
+	public ResponseEntity<MovementDTO> saveExit(@RequestBody @Valid MovementFormExitDTO exit) {
+
+		MovementDTO saved = movementService.saveExit(exit);
 
 		return ResponseEntity.ok().body(saved);
 	}

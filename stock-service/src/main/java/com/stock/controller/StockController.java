@@ -52,7 +52,7 @@ public class StockController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<StockDTO> searchStock(@PathVariable Long id) {
 
-		StockDTO dto = stockService.findById(id);
+		StockDTO dto = stockService.findByIdStock(id);
 
 		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}

@@ -29,7 +29,7 @@ public class StockServiceImpl implements StockService {
 	private ModelMapper mapper;
 
 	@Override
-	public StockDTO findById(Long id) {
+	public StockDTO findByIdStock(Long id) {
 		Stock stock = stockRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 		return mapper.map(stock, StockDTO.class);
