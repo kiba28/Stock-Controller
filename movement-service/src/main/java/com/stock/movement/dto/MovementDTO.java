@@ -18,6 +18,7 @@ public class MovementDTO {
 	private double exitPrice;
 	private Long productId;
 	private Status status;
+	private Double total;
 	
 	public MovementDTO(Movement entity) {
 		this.id = entity.getId();
@@ -26,6 +27,7 @@ public class MovementDTO {
 		this.exitPrice = entity.getExitPrice();
 		this.productId = entity.getProductId();
 		this.status = entity.getStatus();
+		this.total = 0.0;
 	}
 
 	
