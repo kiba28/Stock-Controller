@@ -93,6 +93,7 @@ class MovementServiceImplTest {
 	public void shouldUpdateAnMovement() {
 		Movement mov = MovementBuilder.getMovement();
 		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
+		movForm.setPrice(2.43);
 		ResponseEntity<Stock> sto = StockBuilder.getStock();
 
 		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.of(mov));
