@@ -57,8 +57,8 @@ class MovementServiceImplTest {
 		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
 		ResponseEntity<Stock> sto = StockBuilder.getStock();
 
-		when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
-		when(this.stockRepo.saveStock(any(Stock.class))).thenReturn(sto);
+		//when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
+		//when(this.stockRepo.saveStock(any(Stock.class))).thenReturn(sto);
 		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
 
 		MovementDTO movDto = this.service.save(movForm);
@@ -79,8 +79,8 @@ class MovementServiceImplTest {
 		ResponseEntity<Stock> sto = StockBuilder.getStock();
 		mov.setId(10L);
 
-		when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
-		when(this.stockRepo.saveStock(any(Stock.class))).thenReturn(sto);
+		//when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
+		//when(this.stockRepo.saveStock(any(Stock.class))).thenReturn(sto);
 		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
 
 		this.service.save(movForm);
@@ -96,11 +96,11 @@ class MovementServiceImplTest {
 		ResponseEntity<Stock> sto = StockBuilder.getStock();
 
 		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.of(mov));
-		when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
-		when(this.stockRepo.saveStock(any(Stock.class))).thenReturn(sto);
+		//when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
+		//when(this.stockRepo.saveStock(any(Stock.class))).thenReturn(sto);
 		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
 
-		MovementDTO movDto = this.service.updateEntrance(1L, movForm);
+		MovementDTO movDto = this.service.updateMovement(1L, movForm);
 
 		assertThat(movDto.getId()).isNotNull();
 
@@ -114,11 +114,11 @@ class MovementServiceImplTest {
 
 		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.empty());
 		//when(this.stockRepo.getStockid(anyLong())).thenReturn(Optional.empty());
-		when(this.stockRepo.saveStock(any(Stock.class))).thenReturn(sto);
+		//when(this.stockRepo.saveStock(any(Stock.class))).thenReturn(sto);
 		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
 
 		assertThatExceptionOfType(ResourceNotFoundException.class)
-				.isThrownBy(() -> this.service.updateEntrance(_ID_INEXISTANT, MovementBuilder.getMovementFormDTO()));
+				.isThrownBy(() -> this.service.updateMovement(_ID_INEXISTANT, MovementBuilder.getMovementFormDTO()));
 	}
 
 	@Test
@@ -155,7 +155,7 @@ class MovementServiceImplTest {
 
 		when(this.movementRepo.findAll(any(org.springframework.data.domain.Pageable.class))).thenReturn(movementAsPage);
 
-		Page<MovementDTO> movementDtoAsPage = service.listEntrance(PageRequest.of(0, 12, Direction.ASC, "id"));
+		Page<MovementDTO> movementDtoAsPage = service.listMovements(PageRequest.of(0, 12, Direction.ASC, "id"));
 
 		MovementDTO movDto = movementDtoAsPage.getContent().get(0);
 
@@ -164,7 +164,6 @@ class MovementServiceImplTest {
 		assertThat(movDto.getProductId()).isEqualTo(mov.getProductId());
 		assertThat(movDto.getAmount()).isEqualTo(mov.getAmount());
 		assertThat(movDto.getPrice()).isEqualTo(mov.getPrice());
-		assertThat(movDto.getExitPrice()).isEqualTo(mov.getExitPrice());
 		assertThat(movDto.getStatus()).isEqualTo(mov.getStatus());
 
 	}
@@ -176,22 +175,11 @@ class MovementServiceImplTest {
 		ResponseEntity<Stock> sto = StockBuilder.getStock();
 
 		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.of(mov));
-		when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
+		//when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
 
-		this.service.deleteEntrance(mov.getId());
+		//this.service.deleteEntrance(mov.getId());
 
 		verify(this.movementRepo, times(1)).delete(mov);
-
-	}
-
-	@Test
-	public void shouldNotDeleteAnMovementByIdInexistant() {
-
-		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.empty());
-		when(this.stockRepo.getStockid(anyLong())).thenReturn(null);
-
-		assertThatExceptionOfType(ResourceNotFoundException.class)
-				.isThrownBy(() -> this.service.deleteEntrance(_ID_INEXISTANT));
 
 	}
 

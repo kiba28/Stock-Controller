@@ -9,7 +9,7 @@ import com.stock.product.dto.ProductWithStockDTO;
 
 public interface ProductService {
 
-	ProductDTO saveProduct(ProductFormDTO body);
+	ProductWithStockDTO saveProduct(ProductFormDTO body);
 
 	Page<ProductDTO> listProducts(PageRequest pageRequest);
 

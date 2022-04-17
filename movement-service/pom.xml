@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.stock.movement</groupId>
-	<artifactId>movement</artifactId>
+	<artifactId>movement-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>movement-service</name>
 	<description>Demo project for Spring Boot</description>

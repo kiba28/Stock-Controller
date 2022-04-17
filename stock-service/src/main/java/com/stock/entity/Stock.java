@@ -17,11 +17,4 @@ public class Stock {
 	private double exitPrice;
 	private int stockQuantity;
 
-	public void entrance(Integer qtd) {
-		this.stockQuantity += qtd;
-	}
-
-	public void exit(Integer qtd) {
-		this.stockQuantity -= qtd;
-	}
 }

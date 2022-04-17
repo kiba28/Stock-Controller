@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.movement.dto.MovementDTO;
 import com.stock.movement.dto.MovementFormDTO;
-import com.stock.movement.dto.MovementFormExitDTO;
 import com.stock.movement.services.MovementService;
 
 @RestController
@@ -31,60 +30,45 @@ public class MovementController {
 	private MovementService movementService;
 
 	@PostMapping
-	public ResponseEntity<MovementDTO> saveEntrance(@RequestBody @Valid MovementFormDTO entrance) {
+	public ResponseEntity<MovementDTO> saveMovement(@RequestBody @Valid MovementFormDTO movement) {
+		MovementDTO saved = movementService.save(movement);
 
-		MovementDTO saved = movementService.save(entrance);
-
-		return ResponseEntity.ok().body(saved);
-	}
-	
-	@PostMapping(path = "/exit")
-	public ResponseEntity<MovementDTO> saveExit(@RequestBody @Valid MovementFormExitDTO exit) {
-
-		MovementDTO saved = movementService.saveExit(exit);
-
-		return ResponseEntity.ok().body(saved);
+		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<MovementDTO>> listAllEntrancePage(
+	public ResponseEntity<Page<MovementDTO>> listAllMovementsAsPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
-			@RequestParam(value = "direction", defaultValue = "ASC") String direction
-
-	) {
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), "id");
 
-		Page<MovementDTO> list = movementService.listEntrance(pageRequest);
+		Page<MovementDTO> list = movementService.listMovements(pageRequest);
 
-		return ResponseEntity.ok().body(list);
+		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
 
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<MovementDTO> updateEntrance(@PathVariable Long id, @RequestBody @Valid MovementFormDTO entrance) {
-
-		MovementDTO prod = movementService.updateEntrance(id, entrance);
+	public ResponseEntity<MovementDTO> updateMovement(@PathVariable Long id,
+			@RequestBody @Valid MovementFormDTO movement) {
+		MovementDTO prod = movementService.updateMovement(id, movement);
 
 		return ResponseEntity.status(HttpStatus.OK).body(prod);
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<MovementDTO> searchEntrance(@PathVariable Long id) {
-
+	public ResponseEntity<MovementDTO> searchMovement(@PathVariable Long id) {
 		MovementDTO dto = movementService.findById(id);
 
-		return ResponseEntity.ok().body(dto);
-
+		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<MovementDTO> deleteEntrance(@PathVariable Long id) {
+	public ResponseEntity<Object> deleteMovement(@PathVariable Long id) {
+		movementService.deleteLastMovement();
 
-		movementService.deleteEntrance(id);
-
-		return ResponseEntity.noContent().build();
-
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 }

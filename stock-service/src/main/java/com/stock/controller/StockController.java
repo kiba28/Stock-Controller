@@ -30,13 +30,13 @@ public class StockController {
 	private StockService stockService;
 
 	@GetMapping
-	public ResponseEntity<Page<StockDTO>> listAllStock(@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<StockDTO>> listAllStocks(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), "productId");
 
-		Page<StockDTO> list = stockService.listStock(pageRequest);
+		Page<StockDTO> list = stockService.listAsPage(pageRequest);
 
 		return ResponseEntity.ok().body(list);
 	}
@@ -52,7 +52,7 @@ public class StockController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<StockDTO> searchStock(@PathVariable Long id) {
 
-		StockDTO dto = stockService.findByIdStock(id);
+		StockDTO dto = stockService.search(id);
 
 		return ResponseEntity.status(HttpStatus.OK).body(dto);
 	}

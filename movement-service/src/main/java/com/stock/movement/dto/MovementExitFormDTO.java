@@ -1,22 +1,21 @@
 package com.stock.movement.dto;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class MovementFormExitDTO {
+@AllArgsConstructor
+public class MovementExitFormDTO {
 
 	@Positive
-	@NotNull
+	@NotBlank
 	private Integer amount;
-	@NotNull
+	@NotBlank
 	private Long productId;
 	
-	public MovementFormExitDTO(MovementDTO entity) {
-		
-	}
 }

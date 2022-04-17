@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cfs</groupId>
-	<artifactId>c-naming-server</artifactId>
+	<artifactId>naming-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>c-naming-server</name>
 	<description>Demo project for Spring Boot</description>

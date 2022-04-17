@@ -10,9 +10,9 @@ public interface StockService {
 
 	StockDTO save(StockFormDTO body);
 	
-	StockDTO findByIdStock(Long id);
+	StockDTO search(Long id);
 	
-	Page<StockDTO> listStock(Pageable paginacao);
+	Page<StockDTO> listAsPage(Pageable paginacao);
 
 	void delete(Long id);
 

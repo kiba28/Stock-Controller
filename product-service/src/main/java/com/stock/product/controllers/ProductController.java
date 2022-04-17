@@ -34,11 +34,11 @@ public class ProductController {
 	private ProductService productService;
 
 	@PostMapping
-	public ResponseEntity<ProductDTO> saveProduct(@RequestBody ProductFormDTO product) {
+	public ResponseEntity<ProductWithStockDTO> saveProduct(@RequestBody ProductFormDTO product) {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("token "+auth);
-		ProductDTO prod = productService.saveProduct(product);
+		ProductWithStockDTO prod = productService.saveProduct(product);
 		
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(prod);

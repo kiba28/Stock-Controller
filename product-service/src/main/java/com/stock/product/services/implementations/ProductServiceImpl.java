@@ -3,10 +3,10 @@ package com.stock.product.services.implementations;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -41,21 +41,20 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	@Transactional
-	public ProductDTO saveProduct(ProductFormDTO body) {
-        
+	public ProductWithStockDTO saveProduct(ProductFormDTO body) {
+
 		body.setCategory(categoryRepository.findById(body.getCategoryId())
 				.orElseThrow(() -> new ResourceNotFoundException("Category not found " + body.getCategoryId())));
 
-		Product entity = new Product();
-		copyDtoToEntity(body, entity);
-	 	repository.save(entity);
-		Stock stockSaved = new Stock();
-        
-		stockSaved.setProductId(entity.getId());
-		stockSaved.setStockQuantity(0);
-		stockProxy.saveStock(stockSaved);
-		
-		return new ProductDTO(entity);
+		Product product = new Product();
+		BeanUtils.copyProperties(body, product);
+		product = repository.save(product);
+		Stock stock = new Stock();
+
+		stock.setProductId(product.getId());
+		stockProxy.saveStock(stock);
+
+		return mapper.map(product, ProductWithStockDTO.class);
 	}
 
 	@Override
@@ -69,29 +68,30 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public ProductDTO updateProduct(Long id, ProductFormDTO body) {
-		try {
-			Product entity = repository.getById(id);
-			copyDtoToEntity(body,entity);
-			
-			entity = repository.save(entity);
-			return new ProductDTO(entity);
-			}
-			catch (EntityNotFoundException e) {
-				throw new ResourceNotFoundException("id not found " + id);
-			}
+		Product product = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+		if (body.getCategoryId() > 0) {
+			body.setCategory(categoryRepository.findById(body.getCategoryId())
+					.orElseThrow(() -> new ResourceNotFoundException("Category not found " + body.getCategoryId())));
+			BeanUtils.copyProperties(body, product);
+			return mapper.map(repository.save(product), ProductDTO.class);
 		}
+		BeanUtils.copyProperties(body, product, "category");
+
+		return mapper.map(repository.save(product), ProductDTO.class);
+	}
 
 	@Override
 	public ProductWithStockDTO findById(Long id) {
 		Product product = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
-		ResponseEntity<Stock> stockEntity = stockProxy.searchStock(product.getId());
-		Stock stock = stockEntity.getBody();
+		ResponseEntity<Stock> stockReponseEntity = stockProxy.searchStock(product.getId());
+		Stock stock = stockReponseEntity.getBody();
 		ProductWithStockDTO productStock = mapper.map(product, ProductWithStockDTO.class);
 		productStock.setStockQuantity(stock.getStockQuantity());
 		productStock.setPrice(stock.getPrice());
 		productStock.setExitPrice(stock.getExitPrice());
-		
+
 		return productStock;
 	}
 
@@ -99,15 +99,9 @@ public class ProductServiceImpl implements ProductService {
 	public void deleteProduct(Long id) {
 		Product product = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
-		
+
 		stockProxy.deleteStock(id);
 		repository.delete(product);
-	}
-	
-	private void copyDtoToEntity(ProductFormDTO dto, Product entity) {
-		entity.setName(dto.getName());
-		entity.setUnity(dto.getUnity());
-		entity.setCategory(dto.getCategory());
 	}
 
 }

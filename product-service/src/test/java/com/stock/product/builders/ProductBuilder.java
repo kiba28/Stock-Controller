@@ -29,6 +29,7 @@ public final class ProductBuilder {
 		ProductFormDTO prod = new ProductFormDTO();
 		prod.setName("Mochila");
 		prod.setUnity("UN");
+		prod.setCategoryId(1L);
 		prod.setCategory(CategoryBuilder.getCategory());
 
 		return prod;

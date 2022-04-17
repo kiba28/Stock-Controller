@@ -20,69 +20,55 @@ import io.restassured.http.ContentType;
 
 @WebMvcTest(MovementController.class)
 class MovementControllerTest {
-	
+
 	@Autowired
 	private MovementController controller;
-	
+
 	@MockBean
 	private MovementService movementService;
-	
+
 	@BeforeEach
 	public void setup() {
 		standaloneSetup(this.controller);
-		MovementDTO dto =new MovementDTO();
+		MovementDTO dto = new MovementDTO();
 	}
 
 	@Test
 	void deveriaRetornaSucesso_QuandoBuscarUmMoviemnto() {
-		MovementDTO dto =new MovementDTO();
-		 dto.setId(1L);
-		 dto.setAmount(2);
-		 dto.setPrice(10.2);
-		 dto.setExitPrice(16.5);
-		 dto.setProductId(2L);
-		 dto.setStatus(Status.ENTRANCE);
-		
+		MovementDTO dto = new MovementDTO();
+		dto.setId(1L);
+		dto.setAmount(2);
+		dto.setPrice(10.2);
+		dto.setProductId(2L);
+		dto.setStatus(Status.ENTRANCE);
+
 		when(this.movementService.findById(1L)).thenReturn(dto);
-		
-		given()
-		  .accept(ContentType.JSON)
-		.when() 
-		  .get("/movement-service/{id}", 1L)
-		.then()
-		  .statusCode(HttpStatus.OK.value()) ;
+
+		given().accept(ContentType.JSON).when().get("/movement-service/{id}", 1L).then()
+				.statusCode(HttpStatus.OK.value());
 	}
-	
 
 	@Test
 	void deveriaRetornaSucesso_QuandoSalvarUmMoviemntoDeEntrada() {
-		 MovementFormDTO dto =new MovementFormDTO();
-		
-		 dto.setAmount(2);
-		 dto.setPrice(10.2);
-		 dto.setPercentage(20.5);
-		 dto.setProductId(2L);
-		 dto.setStatus(Status.ENTRANCE);
-		 
-		 MovementDTO mdto =new MovementDTO();
-		 
+		MovementFormDTO dto = new MovementFormDTO();
+
+		dto.setAmount(2);
+		dto.setPrice(10.2);
+		dto.setProductId(2L);
+		dto.setStatus(Status.ENTRANCE);
+
+		MovementDTO mdto = new MovementDTO();
+
 		copia(dto, mdto);
-		 
-		
+
 		when(this.movementService.save(dto)).thenReturn(mdto);
-		
-		given()
-		  .accept(ContentType.JSON)
-		.when() 
-		  .get("/movement-service")
-		.then()
-		  .statusCode(HttpStatus.OK.value()) ;
+
+		given().accept(ContentType.JSON).when().get("/movement-service").then().statusCode(HttpStatus.OK.value());
 	}
 
 	public void copia(MovementFormDTO dto, MovementDTO EntiDTO) {
 		EntiDTO.setId(1L);
 		EntiDTO.setAmount(dto.getAmount());
-		EntiDTO.setExitPrice((dto.getPercentage()* dto.getPrice())/100 +dto.getPrice());
 		EntiDTO.setPrice(dto.getPrice());
 		EntiDTO.setProductId(dto.getProductId());
 		EntiDTO.setStatus(dto.getStatus());

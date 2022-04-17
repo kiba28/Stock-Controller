@@ -2,9 +2,6 @@ package com.stock.product.dto;
 
 import java.io.Serializable;
 
-import com.stock.product.entities.Category;
-import com.stock.product.response.Stock;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

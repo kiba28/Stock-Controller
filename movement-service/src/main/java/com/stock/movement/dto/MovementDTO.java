@@ -1,6 +1,7 @@
 package com.stock.movement.dto;
 
-import com.stock.movement.entities.Movement;
+import java.time.LocalDateTime;
+
 import com.stock.movement.enums.Status;
 
 import lombok.AllArgsConstructor;
@@ -15,20 +16,9 @@ public class MovementDTO {
 	private Long id;
 	private Integer amount;
 	private double price;
-	private double exitPrice;
 	private Long productId;
 	private Status status;
 	private Double total;
-	
-	public MovementDTO(Movement entity) {
-		this.id = entity.getId();
-		this.amount = entity.getAmount();
-		this.price = entity.getPrice();
-		this.exitPrice = entity.getExitPrice();
-		this.productId = entity.getProductId();
-		this.status = entity.getStatus();
-		this.total = 0.0;
-	}
+	private LocalDateTime createdAt;
 
-	
 }

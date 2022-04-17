@@ -1,4 +1,4 @@
-package com.stock.services;
+package com.stock.services.implementations;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +18,7 @@ import com.stock.dto.StockFormDTO;
 import com.stock.entity.Stock;
 import com.stock.exceptions.ResourceNotFoundException;
 import com.stock.repository.StockRepository;
+import com.stock.services.StockService;
 
 @Service
 public class StockServiceImpl implements StockService {
@@ -29,7 +30,7 @@ public class StockServiceImpl implements StockService {
 	private ModelMapper mapper;
 
 	@Override
-	public StockDTO findByIdStock(Long id) {
+	public StockDTO search(Long id) {
 		Stock stock = stockRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 		return mapper.map(stock, StockDTO.class);
@@ -41,8 +42,8 @@ public class StockServiceImpl implements StockService {
 	}
 
 	@Override
-	public Page<StockDTO> listStock(@PageableDefault(sort = "id", direction = Direction.ASC) Pageable paginacao) {
-		Page<Stock> page = stockRepository.findAll(paginacao);
+	public Page<StockDTO> listAsPage(@PageableDefault(sort = "id", direction = Direction.ASC) Pageable pageInfo) {
+		Page<Stock> page = stockRepository.findAll(pageInfo);
 
 		List<StockDTO> list = page.getContent().stream().map(Stock -> mapper.map(Stock, StockDTO.class))
 				.collect(Collectors.toList());
@@ -55,9 +56,11 @@ public class StockServiceImpl implements StockService {
 				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
 		if (stock.getStockQuantity() == 0) {
 			stockRepository.deleteById(id);
+		} else {
+			throw new ResourceNotFoundException("Cannot delete stock with products in it. Still "
+					+ stock.getStockQuantity() + " products in stock.");
 		}
-		throw new ResourceNotFoundException(
-				"Cannot delete stock with products in it. Still " + stock.getStockQuantity() + "products in stock.");
+
 	}
 
 	@Override

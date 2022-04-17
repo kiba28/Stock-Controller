@@ -64,13 +64,13 @@ class ProductServiceImplTest {
 		when(this.stockProxy.saveStock(any(Stock.class))).thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(StockBuilder.getStock()));
 		
 
-		ProductDTO productDto = this.service.saveProduct(ProductBuilder.getProductFormDTO());
+		ProductWithStockDTO productDto = this.service.saveProduct(ProductBuilder.getProductFormDTO());
 
 		
 		assertThat(productDto.getId()).isNotNull();
 		assertThat(productDto.getName()).isEqualTo(product.getName());
 		assertThat(productDto.getUnity()).isEqualTo(product.getUnity());
-		assertThat(productDto.getCategory()).isEqualTo(product.getCategory());
+		assertThat(productDto.getCategoryName()).isEqualTo(product.getCategory().getName());
 		verify(this.stockProxy, times(1)).saveStock(StockBuilder.getStock());
 	}
 

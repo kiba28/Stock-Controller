@@ -1,33 +1,27 @@
 package com.stock.movement.dto;
 
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 import com.stock.movement.enums.Status;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class MovementFormDTO {
 
 	@Positive
-	@NotNull
+	@NotBlank
 	private Integer amount;
-	@NotNull
+	@NotBlank
 	private double price;
-//	@NotNull
-//	private double exitPrice;
-	@NotNull
-	private double percentage;
-	@NotNull
+	@NotBlank
 	private Long productId;
+	@NotBlank
 	private Status status;
-	
-	public MovementFormDTO(MovementDTO entity) {
-		
-	}
-	
 }

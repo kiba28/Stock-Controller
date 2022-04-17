@@ -18,7 +18,6 @@ public class ProductFormDTO {
 	private String name;
 	@NotBlank(message = "Campo Obrigatório")
 	private String unity;
-	
 	private long categoryId;
 	private Category category;
 	

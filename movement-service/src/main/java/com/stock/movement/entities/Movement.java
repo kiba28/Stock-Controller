@@ -26,17 +26,9 @@ public class Movement {
 	private Long id;
 	private Integer amount;
 	private double price;
-	private double exitPrice;
 	private Long productId;
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	private LocalDateTime createdAt = LocalDateTime.now();
-	
-	
-	
-	public double percenctagePrice(double perc) {
-		this.exitPrice= price+ (price * (perc/100)); 
-		return exitPrice;
-	}
 
 }

@@ -12,13 +12,9 @@ import com.stock.movement.response.Stock;
 @FeignClient(name = "stock-service")
 public interface StockProxy {
 
-	@GetMapping(value = "/stock-service")
-	public Stock getStock();
+	@GetMapping(value = "/stock-service/{id}")
+	public ResponseEntity<Stock> searchStock(@PathVariable Long id);
 
-	@GetMapping(value = "/stock-service/{productId}")
-	public Stock getStockid(
-			@PathVariable("productId") Long productId);
-	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Stock> updateStock(@PathVariable Long id, @RequestBody Stock body);
 
