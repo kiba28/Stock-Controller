@@ -57,8 +57,7 @@ class MovementServiceImplTest {
 		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
 		ResponseEntity<Stock> sto = StockBuilder.getStock();
 
-		//when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
-		//when(this.stockRepo.saveStock(any(Stock.class))).thenReturn(sto);
+		when(this.stockRepo.searchStock(anyLong())).thenReturn(sto);
 		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
 
 		MovementDTO movDto = this.service.save(movForm);
@@ -79,8 +78,7 @@ class MovementServiceImplTest {
 		ResponseEntity<Stock> sto = StockBuilder.getStock();
 		mov.setId(10L);
 
-		//when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
-		//when(this.stockRepo.saveStock(any(Stock.class))).thenReturn(sto);
+		when(this.stockRepo.searchStock(anyLong())).thenReturn(sto);
 		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
 
 		this.service.save(movForm);
@@ -97,8 +95,7 @@ class MovementServiceImplTest {
 		ResponseEntity<Stock> sto = StockBuilder.getStock();
 
 		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.of(mov));
-		//when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
-		//when(this.stockRepo.saveStock(any(Stock.class))).thenReturn(sto);
+		when(this.stockRepo.searchStock(anyLong())).thenReturn(sto);
 		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
 
 		MovementDTO movDto = this.service.updateMovement(1L, movForm);
@@ -173,12 +170,12 @@ class MovementServiceImplTest {
 	public void shouldDeleteAnMovementById() {
 
 		Movement mov = MovementBuilder.getMovement();
-		ResponseEntity<Stock> sto = StockBuilder.getStock();
+		//ResponseEntity<Stock> sto = StockBuilder.getStock();
 
-		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.of(mov));
-		//when(this.stockRepo.getStockid(anyLong())).thenReturn(sto.getBody());
+		when(this.movementRepo.findTopByOrderByIdDesc()).thenReturn(mov);
+		//when(this.stockRepo.searchStock(anyLong())).thenReturn(sto);
 
-		//this.service.deleteEntrance(mov.getId());
+		this.service.deleteLastMovement();
 
 		verify(this.movementRepo, times(1)).delete(mov);
 
