@@ -30,7 +30,6 @@ class MovementControllerTest {
 	@BeforeEach
 	public void setup() {
 		standaloneSetup(this.controller);
-		MovementDTO dto = new MovementDTO();
 	}
 
 	@Test
