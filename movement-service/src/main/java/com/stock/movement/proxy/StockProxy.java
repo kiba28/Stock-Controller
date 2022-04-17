@@ -15,7 +15,7 @@ public interface StockProxy {
 	@GetMapping(value = "/stock-service/{id}")
 	public ResponseEntity<Stock> searchStock(@PathVariable Long id);
 
-	@PutMapping(value = "/{id}")
+	@PutMapping(value = "/stock-service/{id}")
 	public ResponseEntity<Stock> updateStock(@PathVariable Long id, @RequestBody Stock body);
 
 }
