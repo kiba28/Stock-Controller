@@ -45,7 +45,7 @@ class ProductServiceImplTest {
 
 	@Autowired
 	private ProductServiceImpl service;
-	
+
 	@MockBean
 	private StockProxy stockProxy;
 
@@ -56,17 +56,16 @@ class ProductServiceImplTest {
 	private CategoryRepository categoryRepository;
 
 	@Test
-	public void deveriaInserirUmProduto() {
+	public void shouldInsertAProduct() {
 		Product product = ProductBuilder.getProduct();
 
 		when(this.categoryRepository.findById(anyLong())).thenReturn(Optional.of(CategoryBuilder.getCategory()));
 		when(this.repository.save(any(Product.class))).thenReturn(product);
-		when(this.stockProxy.saveStock(any(Stock.class))).thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(StockBuilder.getStock()));
-		
+		when(this.stockProxy.saveStock(any(Stock.class)))
+				.thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(StockBuilder.getStock()));
 
 		ProductWithStockDTO productDto = this.service.saveProduct(ProductBuilder.getProductFormDTO());
 
-		
 		assertThat(productDto.getId()).isNotNull();
 		assertThat(productDto.getName()).isEqualTo(product.getName());
 		assertThat(productDto.getUnity()).isEqualTo(product.getUnity());
@@ -75,7 +74,7 @@ class ProductServiceImplTest {
 	}
 
 	@Test
-	public void naoDeveriaInserirUmProdutoPoisNaoExisteCategoriaComOIdInformado() {
+	public void shouldNotInsertAProductBecauseThereIsNoCategoryWithTheInformedId() {
 		Product product = ProductBuilder.getProduct();
 
 		when(this.categoryRepository.findById(anyLong())).thenReturn(Optional.empty());
@@ -86,7 +85,7 @@ class ProductServiceImplTest {
 	}
 
 	@Test
-	public void deveriaBuscarTodosOsProdutosComPaginacao() {
+	public void shouldSearchAllProductsWithPagination() {
 		Product product = ProductBuilder.getProduct();
 		List<Product> list = Arrays.asList(product, product);
 		Page<Product> productAsPage = new PageImpl<>(list);
@@ -104,7 +103,7 @@ class ProductServiceImplTest {
 	}
 
 	@Test
-	public void deveriaAtualizarUmProduto() {
+	public void shouldUpdateAProductWithCategory() {
 		Product product = ProductBuilder.getProduct();
 		ProductFormDTO productForm = ProductBuilder.getProductFormDTO();
 		productForm.setName("Mochila da barbie");
@@ -122,7 +121,26 @@ class ProductServiceImplTest {
 	}
 
 	@Test
-	public void naoDeveriaAtualizarUmProdutoPoisNaoExisteProdutoComOIdInformado() {
+	public void shouldUpdateAProductWithoutCategory() {
+		Product product = ProductBuilder.getProduct();
+		ProductFormDTO productForm = ProductBuilder.getProductFormDTO();
+		productForm.setName("Mochila da barbie");
+		productForm.setCategoryId(0);
+
+		when(this.categoryRepository.findById(anyLong())).thenReturn(Optional.of(CategoryBuilder.getCategory()));
+		when(this.repository.findById(anyLong())).thenReturn(Optional.of(product));
+		when(this.repository.save(any(Product.class))).thenReturn(product);
+
+		ProductDTO productDto = this.service.updateProduct(1L, productForm);
+
+		assertThat(productDto.getId()).isNotNull();
+		assertThat(productDto.getName()).isEqualTo(productForm.getName());
+		assertThat(productDto.getUnity()).isEqualTo(productForm.getUnity());
+		assertThat(productDto.getCategory()).isEqualTo(productForm.getCategory());
+	}
+
+	@Test
+	public void shouldNotUpdateAProductBecauseThereIsNoProductWithTheInformedId() {
 		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
 		assertThatExceptionOfType(ResourceNotFoundException.class)
@@ -130,7 +148,7 @@ class ProductServiceImplTest {
 	}
 
 	@Test
-	public void naoDeveriaAtualizarUmProdutoPoisNaoExisteCategoriaComOIdInformado() {
+	public void shouldNotUpdateAProductBecauseThereIsNoCategoryWithTheInformedId() {
 		Product product = ProductBuilder.getProduct();
 
 		when(this.repository.findById(anyLong())).thenReturn(Optional.of(product));
@@ -141,7 +159,7 @@ class ProductServiceImplTest {
 	}
 
 	@Test
-	public void deveriaEncontrarUmProdutoPeloId() {
+	public void shouldFindAProductById() {
 		Product product = ProductBuilder.getProduct();
 		Stock stock = StockBuilder.getStock();
 
@@ -159,14 +177,14 @@ class ProductServiceImplTest {
 	}
 
 	@Test
-	public void naoDeveriaEncontrarUmProdutoPoisNaoExisteProdutoComOIdInformado() {
+	public void ShouldNotFindAProductBecauseThereIsNoProductWithTheInformedId() {
 		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
 		assertThatExceptionOfType(ResourceNotFoundException.class).isThrownBy(() -> this.service.findById(2L));
 	}
 
 	@Test
-	public void deveriaDeletarUmProdutoPeloId() {
+	public void shouldDeleteAProductById() {
 		Product product = ProductBuilder.getProduct();
 
 		when(this.repository.findById(anyLong())).thenReturn(Optional.of(product));
@@ -177,7 +195,7 @@ class ProductServiceImplTest {
 	}
 
 	@Test
-	public void naoDeveriaDeletarUmProdutoPoisNaoExisteProdutoComOIdInformado() {
+	public void ShouldNotDeleteAProductBecauseThereIsNoProductWithTheInformedId() {
 		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
 		assertThatExceptionOfType(ResourceNotFoundException.class).isThrownBy(() -> this.service.deleteProduct(2L));
