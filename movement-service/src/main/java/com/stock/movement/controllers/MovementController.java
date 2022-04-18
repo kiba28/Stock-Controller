@@ -31,8 +31,8 @@ public class MovementController {
 
 	@PostMapping
 	public ResponseEntity<MovementDTO> saveMovement(@RequestBody @Valid MovementFormDTO movement) {
-		MovementDTO saved = movementService.save(movement);
 
+		MovementDTO saved = movementService.save(movement);
 		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
 
