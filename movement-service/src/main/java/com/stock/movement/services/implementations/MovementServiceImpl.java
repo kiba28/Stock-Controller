@@ -38,14 +38,16 @@ public class MovementServiceImpl implements MovementService {
 
 	@Override
 	public MovementDTO save(MovementFormDTO body) {
+
 		ResponseEntity<Stock> stockResponseEntity = stockProxy.searchStock(body.getProductId());
+
 		Stock stock = stockResponseEntity.getBody();
 		Movement movement = mapper.map(body, Movement.class);
 		if (movement.getStatus() == Status.ENTRANCE) {
 			stock.entrance(movement.getAmount());
 			stock.setPrice(movement.getPrice());
 		} else {
-			if(movement.getAmount() > stock.getStockQuantity()) {
+			if (movement.getAmount() > stock.getStockQuantity()) {
 				throw new ResourceNotFoundException("Stock don't have enough quantity for this movement");
 			}
 			stock.exit(movement.getAmount());
