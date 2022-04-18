@@ -171,8 +171,8 @@ class ProductServiceImplTest {
 		assertThat(producWithStocktDto.getId()).isNotNull();
 		assertThat(producWithStocktDto.getName()).isEqualTo(product.getName());
 		assertThat(producWithStocktDto.getUnity()).isEqualTo(product.getUnity());
-		assertThat(producWithStocktDto.getPrice()).isEqualTo(stock.getPrice());
-		assertThat(producWithStocktDto.getExitPrice()).isEqualTo(stock.getExitPrice());
+		assertThat(producWithStocktDto.getLastEntrancePrice()).isEqualTo(stock.getLastEntrancePrice());
+		assertThat(producWithStocktDto.getLastExitPrice()).isEqualTo(stock.getLastExitPrice());
 		assertThat(producWithStocktDto.getStockQuantity()).isEqualTo(stock.getStockQuantity());
 	}
 

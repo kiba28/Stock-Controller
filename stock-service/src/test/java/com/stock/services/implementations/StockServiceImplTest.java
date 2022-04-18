@@ -53,8 +53,8 @@ public class StockServiceImplTest {
 		StockDTO dto = this.stockService.search(1L);
 
 		assertThat(dto.getProductId()).isNotNull();
-		assertThat(dto.getPrice()).isEqualTo(stock.getPrice());
-		assertThat(dto.getExitPrice()).isEqualTo(stock.getExitPrice());
+		assertThat(dto.getLastEntrancePrice()).isEqualTo(stock.getLastEntrancePrice());
+		assertThat(dto.getLastExitPrice()).isEqualTo(stock.getLastExitPrice());
 		assertThat(dto.getStockQuantity()).isEqualTo(stock.getStockQuantity());
 
 	}
@@ -81,8 +81,8 @@ public class StockServiceImplTest {
 		StockDTO dto = this.stockService.save(body);
 
 		assertThat(dto.getProductId()).isNotNull();
-		assertThat(dto.getPrice()).isEqualTo(stock.getPrice());
-		assertThat(dto.getExitPrice()).isEqualTo(stock.getExitPrice());
+		assertThat(dto.getLastEntrancePrice()).isEqualTo(stock.getLastEntrancePrice());
+		assertThat(dto.getLastExitPrice()).isEqualTo(stock.getLastExitPrice());
 		assertThat(dto.getStockQuantity()).isEqualTo(stock.getStockQuantity());
 
 	}
@@ -91,7 +91,7 @@ public class StockServiceImplTest {
 	public void ShouldUpdateAnStock() {
 
 		StockFormDTO body = StockBuilder.getStockFormDTO();
-		body.setPrice(2.45);
+		body.setLastEntrancePrice(2.45);
 		body.setStockQuantity(24);
 
 		Stock stock = StockBuilder.getStock();
@@ -102,8 +102,8 @@ public class StockServiceImplTest {
 		StockDTO dto = this.stockService.update(1L, body);
 
 		assertThat(dto.getProductId()).isNotNull();
-		assertThat(dto.getPrice()).isEqualTo(body.getPrice());
-		assertThat(dto.getExitPrice()).isEqualTo(body.getExitPrice());
+		assertThat(dto.getLastEntrancePrice()).isEqualTo(body.getLastEntrancePrice());
+		assertThat(dto.getLastExitPrice()).isEqualTo(body.getLastExitPrice());
 		assertThat(dto.getStockQuantity()).isEqualTo(body.getStockQuantity());
 
 	}
@@ -112,7 +112,7 @@ public class StockServiceImplTest {
 	public void ShouldThrowException_WhenUpdateStockByIdInexistent() {
 
 		StockFormDTO body = StockBuilder.getStockFormDTO();
-		body.setPrice(2.45);
+		body.setLastEntrancePrice(2.45);
 		body.setStockQuantity(24);
 
 		Stock stock = StockBuilder.getStock();
@@ -140,8 +140,8 @@ public class StockServiceImplTest {
 
 		assertThat(stockDtoAsPage.getContent().size()).isGreaterThan(0);
 		assertThat(stockDto.getProductId()).isNotNull();
-		assertThat(stockDto.getPrice()).isEqualTo(stock.getPrice());
-		assertThat(stockDto.getExitPrice()).isEqualTo(stock.getExitPrice());
+		assertThat(stockDto.getLastEntrancePrice()).isEqualTo(stock.getLastEntrancePrice());
+		assertThat(stockDto.getLastExitPrice()).isEqualTo(stock.getLastExitPrice());
 		assertThat(stockDto.getStockQuantity()).isEqualTo(stock.getStockQuantity());
 
 	}

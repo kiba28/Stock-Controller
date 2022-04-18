@@ -13,8 +13,8 @@ public class Stock {
 
 	@Id
 	private Long productId;
-	private double price;
-	private double exitPrice;
+	private double lastEntrancePrice;
+	private double lastExitPrice;
 	private int stockQuantity;
 
 }
