@@ -303,7 +303,7 @@ class MovementServiceImplTest {
 
 		service.deleteLastMovement();
 
-		assertThat(mov.getPrice()).isEqualTo(stock.getBody().getExitPrice());
+		assertThat(mov.getPrice()).isEqualTo(stock.getBody().getLastExitPrice());
 		verify(this.movementRepo, times(1)).delete(mov2);
 
 	}
@@ -326,7 +326,7 @@ class MovementServiceImplTest {
 
 		service.deleteLastMovement();
 
-		assertThat(mov.getPrice()).isEqualTo(stock.getBody().getExitPrice());
+		assertThat(mov.getPrice()).isEqualTo(stock.getBody().getLastEntrancePrice());
 		verify(this.movementRepo, times(1)).delete(mov2);
 
 	}

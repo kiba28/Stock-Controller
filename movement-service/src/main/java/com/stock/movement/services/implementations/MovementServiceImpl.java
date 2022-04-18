@@ -42,16 +42,17 @@ public class MovementServiceImpl implements MovementService {
 		ResponseEntity<Stock> stockResponseEntity = stockProxy.searchStock(body.getProductId());
 
 		Stock stock = stockResponseEntity.getBody();
-		Movement movement = mapper.map(body, Movement.class);
+		Movement movement = new Movement();
+		BeanUtils.copyProperties(body, movement, "id");
 		if (movement.getStatus() == Status.ENTRANCE) {
 			stock.entrance(movement.getAmount());
-			stock.setPrice(movement.getPrice());
+			stock.setLastEntrancePrice(movement.getPrice());
 		} else {
 			if (movement.getAmount() > stock.getStockQuantity()) {
 				throw new ResourceNotFoundException("Stock don't have enough quantity for this movement");
 			}
 			stock.exit(movement.getAmount());
-			stock.setExitPrice(movement.getPrice());
+			stock.setLastExitPrice(movement.getPrice());
 		}
 		stockProxy.updateStock(stock.getProductId(), stock);
 		return mapper.map(repository.save(movement), MovementDTO.class);
@@ -73,13 +74,13 @@ public class MovementServiceImpl implements MovementService {
 			BeanUtils.copyProperties(body, movement, "id");
 			if (movement.getStatus() == Status.ENTRANCE) {
 				stock.entrance(movement.getAmount());
-				stock.setPrice(movement.getPrice());
+				stock.setLastEntrancePrice(movement.getPrice());
 			} else {
 				if (movement.getAmount() > stock.getStockQuantity()) {
 					throw new ResourceNotFoundException("Stock don't have enough quantity for this movement");
 				}
 				stock.exit(movement.getAmount());
-				stock.setExitPrice(movement.getPrice());
+				stock.setLastExitPrice(movement.getPrice());
 			}
 			stockProxy.updateStock(stock.getProductId(), stock);
 			return mapper.map(repository.save(movement), MovementDTO.class);
@@ -91,13 +92,13 @@ public class MovementServiceImpl implements MovementService {
 			BeanUtils.copyProperties(body, movement, "id");
 			if (movement.getStatus() == Status.ENTRANCE) {
 				stock.entrance(movement.getAmount());
-				stock.setPrice(movement.getPrice());
+				stock.setLastEntrancePrice(movement.getPrice());
 			} else {
 				if (movement.getAmount() > stock.getStockQuantity()) {
 					throw new ResourceNotFoundException("Stock don't have enough quantity for this movement");
 				}
 				stock.exit(movement.getAmount());
-				stock.setExitPrice(movement.getPrice());
+				stock.setLastExitPrice(movement.getPrice());
 			}
 			return mapper.map(repository.save(movement), MovementDTO.class);
 		}
@@ -122,10 +123,10 @@ public class MovementServiceImpl implements MovementService {
 
 		if (lastMovement.getStatus() == Status.ENTRANCE) {
 			stock.exit(lastMovement.getAmount());
-			stock.setPrice(movement.getPrice());
+			stock.setLastEntrancePrice(movement.getPrice());
 		} else {
 			stock.entrance(lastMovement.getAmount());
-			stock.setExitPrice(movement.getPrice());
+			stock.setLastExitPrice(movement.getPrice());
 		}
 		stockProxy.updateStock(stock.getProductId(), stock);
 

@@ -89,8 +89,8 @@ public class ProductServiceImpl implements ProductService {
 		Stock stock = stockReponseEntity.getBody();
 		ProductWithStockDTO productStock = mapper.map(product, ProductWithStockDTO.class);
 		productStock.setStockQuantity(stock.getStockQuantity());
-		productStock.setPrice(stock.getPrice());
-		productStock.setExitPrice(stock.getExitPrice());
+		productStock.setLastEntrancePrice(stock.getLastEntrancePrice());
+		productStock.setLastExitPrice(stock.getLastExitPrice());
 
 		return productStock;
 	}

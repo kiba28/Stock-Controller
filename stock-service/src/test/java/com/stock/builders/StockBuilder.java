@@ -8,8 +8,8 @@ public class StockBuilder {
 	public static Stock getStock() {
 		Stock stock = new Stock();
 		stock.setProductId(1L);
-		stock.setPrice(2);
-		stock.setExitPrice(0);
+		stock.setLastEntrancePrice(2);
+		stock.setLastExitPrice(0);
 		stock.setStockQuantity(2);
 
 		return stock;
@@ -19,8 +19,8 @@ public class StockBuilder {
 
 		StockFormDTO stock = new StockFormDTO();
 		stock.setProductId(1L);
-		stock.setPrice(0);
-		stock.setExitPrice(0);
+		stock.setLastEntrancePrice(0);
+		stock.setLastExitPrice(0);
 		stock.setStockQuantity(0);
 
 		return stock;

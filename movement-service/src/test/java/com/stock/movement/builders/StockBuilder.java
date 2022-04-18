@@ -10,8 +10,8 @@ public class StockBuilder {
 
 		Stock stock = new Stock();
 		stock.setProductId(1L);
-		stock.setPrice(2.55);
-		stock.setExitPrice(2.57);
+		stock.setLastEntrancePrice(2.55);
+		stock.setLastExitPrice(2.57);
 		stock.setStockQuantity(10);	
 
 		return ResponseEntity.ok(stock);

@@ -16,8 +16,8 @@ public class ProductWithStockDTO implements Serializable {
 	private String name;
 	private String unity;
 	private String categoryName;
-	private double price;
-	private double exitPrice;
+	private double lastEntrancePrice;
+	private double lastExitPrice;
 	private int stockQuantity;
 
 }
