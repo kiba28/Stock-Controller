@@ -36,8 +36,6 @@ import com.stock.movement.repository.MovementRepository;
 import com.stock.movement.response.Stock;
 import com.stock.movement.services.implementations.MovementServiceImpl;
 
-import feign.FeignException;
-
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class MovementServiceImplTest {
@@ -54,7 +52,7 @@ class MovementServiceImplTest {
 	private MovementRepository movementRepo;
 
 	@Test
-	public void shouldSaveAnMovement() {
+	public void shouldSaveAExitMovement() {
 
 		Movement mov = MovementBuilder.getMovement();
 		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
@@ -74,7 +72,7 @@ class MovementServiceImplTest {
 	}
 
 	@Test
-	public void shouldSaveAnEntranceMovement() {
+	public void shouldSaveAEntranceMovement() {
 
 		Movement mov = MovementBuilder.getMovement();
 		mov.setStatus(Status.ENTRANCE);
@@ -96,7 +94,21 @@ class MovementServiceImplTest {
 	}
 
 	@Test
-	public void shouldUpdateAnMovement() {
+	public void shouldNotSaveAExitMovementBeacuseAmountIsGreatherThanStockQuantity() {
+
+		Movement mov = MovementBuilder.getMovement();
+		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
+		movForm.setAmount(50);
+		ResponseEntity<Stock> sto = StockBuilder.getStock();
+
+		when(this.stockRepo.searchStock(anyLong())).thenReturn(sto);
+		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
+
+		assertThatExceptionOfType(ResourceNotFoundException.class).isThrownBy(() -> this.service.save(movForm));
+	}
+
+	@Test
+	public void shouldUpdateAExitMovementWithTheSameStock() {
 		Movement mov = MovementBuilder.getMovement();
 		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
 		movForm.setPrice(2.43);
@@ -113,9 +125,9 @@ class MovementServiceImplTest {
 		assertThat(movDto.getPrice()).isEqualTo(mov.getPrice());
 
 	}
-	
+
 	@Test
-	public void shouldUpdateAnEntranceMovement() {
+	public void shouldUpdateAEntranceMovementWithTheSameStock() {
 		Movement mov = MovementBuilder.getMovement();
 		mov.setStatus(Status.ENTRANCE);
 		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
@@ -136,7 +148,88 @@ class MovementServiceImplTest {
 	}
 
 	@Test
-	public void shouldNotUpadateAnMovementByIdInexistant() {
+	public void shouldUpdateAExitMovementWithDiferentStock() {
+		Movement mov = MovementBuilder.getMovement();
+		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
+		movForm.setPrice(2.43);
+		movForm.setProductId(2L);
+		ResponseEntity<Stock> sto = StockBuilder.getStock();
+		ResponseEntity<Stock> sto2 = StockBuilder.getStock();
+		sto2.getBody().setProductId(2L);
+
+		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.of(mov));
+		when(this.stockRepo.searchStock(1L)).thenReturn(sto);
+		when(this.stockRepo.searchStock(2L)).thenReturn(sto2);
+		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
+
+		MovementDTO movDto = this.service.updateMovement(1L, movForm);
+
+		assertThat(movDto.getId()).isNotNull();
+		assertThat(movDto.getProductId()).isEqualTo(movForm.getProductId());
+		assertThat(movDto.getPrice()).isEqualTo(movForm.getPrice());
+	}
+
+	@Test
+	public void shouldUpdateAEntranceMovementWithDiferentStock() {
+		Movement mov = MovementBuilder.getMovement();
+		mov.setStatus(Status.ENTRANCE);
+		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
+		movForm.setPrice(2.43);
+		movForm.setProductId(2L);
+		movForm.setStatus(Status.ENTRANCE);
+		ResponseEntity<Stock> sto = StockBuilder.getStock();
+		ResponseEntity<Stock> sto2 = StockBuilder.getStock();
+		sto2.getBody().setProductId(2L);
+
+		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.of(mov));
+		when(this.stockRepo.searchStock(1L)).thenReturn(sto);
+		when(this.stockRepo.searchStock(2L)).thenReturn(sto2);
+		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
+
+		MovementDTO movDto = this.service.updateMovement(1L, movForm);
+
+		assertThat(movDto.getId()).isNotNull();
+		assertThat(movDto.getProductId()).isEqualTo(movForm.getProductId());
+		assertThat(movDto.getPrice()).isEqualTo(movForm.getPrice());
+	}
+	
+	@Test
+	public void shouldNotUpdateAExitMovementBeacuseAmountIsGreatherThanStockQuantity() {
+		Movement mov = MovementBuilder.getMovement();
+		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
+		movForm.setAmount(50);
+		ResponseEntity<Stock> sto = StockBuilder.getStock();
+
+		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.of(mov));
+		when(this.stockRepo.searchStock(1L)).thenReturn(sto);
+		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
+
+		assertThatExceptionOfType(ResourceNotFoundException.class)
+				.isThrownBy(() -> this.service.updateMovement(1L, movForm));
+	}
+
+	@Test
+	public void shouldNotUpdateAExitMovementWithDiferentStockBeacuseAmountIsGreatherThanStockQuantity() {
+		Movement mov = MovementBuilder.getMovement();
+		MovementFormDTO movForm = MovementBuilder.getMovementFormDTO();
+		movForm.setPrice(2.43);
+		movForm.setProductId(2L);
+		movForm.setAmount(50);
+		ResponseEntity<Stock> sto = StockBuilder.getStock();
+		ResponseEntity<Stock> sto2 = StockBuilder.getStock();
+		sto2.getBody().setProductId(2L);
+
+		when(this.movementRepo.findById(anyLong())).thenReturn(Optional.of(mov));
+		when(this.stockRepo.searchStock(1L)).thenReturn(sto);
+		when(this.stockRepo.searchStock(2L)).thenReturn(sto2);
+		when(this.movementRepo.save(any(Movement.class))).thenReturn(mov);
+
+		assertThatExceptionOfType(ResourceNotFoundException.class)
+				.isThrownBy(() -> this.service.updateMovement(1L, movForm));
+	}
+
+	@Test
+	public void shouldNotUpadateAMovementByIdInexistant() {
 
 		Movement mov = MovementBuilder.getMovement();
 
@@ -195,7 +288,7 @@ class MovementServiceImplTest {
 	}
 
 	@Test
-	public void shouldDeleteAnMovementById() {
+	public void shouldDeleteAnExitMovementById() {
 
 		Movement mov = MovementBuilder.getMovement();
 		mov.setPrice(10.55);

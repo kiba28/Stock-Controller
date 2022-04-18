@@ -42,7 +42,7 @@ class CategoryServiceImplTest {
 	CategoryRepository repository;
 
 	@Test
-	public void deveriaInserirUmaCategoria() {
+	public void shouldInsertACategory() {
 		Category category = CategoryBuilder.getCategory();
 
 		when(this.repository.save(any(Category.class))).thenReturn(category);
@@ -54,7 +54,7 @@ class CategoryServiceImplTest {
 	}
 
 	@Test
-	public void deveriaBuscarTodasAsCategoriasComPaginacao() {
+	public void shouldSearchAllCategoriesWithPagination() {
 		Category category = CategoryBuilder.getCategory();
 		List<Category> list = Arrays.asList(category, category);
 		Page<Category> categoryAsPage = new PageImpl<>(list);
@@ -70,7 +70,7 @@ class CategoryServiceImplTest {
 	}
 
 	@Test
-	public void deveriaAtualizarUmaCategoriaPeloId() {
+	public void shouldUpdateACategoryById() {
 		Category category = CategoryBuilder.getCategory();
 		CategoryFormDTO categoryForm = CategoryBuilder.getCategoryFormDTO();
 		categoryForm.setName("Eletrônico");
@@ -85,7 +85,7 @@ class CategoryServiceImplTest {
 	}
 
 	@Test
-	public void naoDeveriaAtualizarUmaCategoriaPoisNaoExisteCategoriaComOIdInformado() {
+	public void shouldNotUpdateACategoryBecauseThereIsNoCategoryWithTheInformedId() {
 		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
 		assertThatExceptionOfType(ResourceNotFoundException.class)
@@ -93,7 +93,7 @@ class CategoryServiceImplTest {
 	}
 
 	@Test
-	public void deveriaBuscarUmaCategoriaPeloId() {
+	public void shouldFindACategoryById() {
 		Category category = CategoryBuilder.getCategory();
 
 		when(this.repository.findById(anyLong())).thenReturn(Optional.of(category));
@@ -103,31 +103,29 @@ class CategoryServiceImplTest {
 		assertThat(categoryDto.getId()).isEqualTo(category.getId());
 		assertThat(categoryDto.getName()).isEqualTo(category.getName());
 	}
-	
+
 	@Test
-	public void naoDeveriaBuscarUmaCategoriaPoisNaoExisteCategoriaComOIdInformado() {
+	public void shouldNotFindACategoryBecauseThereIsNoCategoryWithTheInformedId() {
 		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
-		assertThatExceptionOfType(ResourceNotFoundException.class)
-				.isThrownBy(() -> this.service.findById(1L));
+		assertThatExceptionOfType(ResourceNotFoundException.class).isThrownBy(() -> this.service.findById(1L));
 	}
-	
+
 	@Test
-	public void deveriaDeletarUmaCategoriaPeloId() {
+	public void shouldDeleteACategoryById() {
 		Category category = CategoryBuilder.getCategory();
 
 		when(this.repository.findById(anyLong())).thenReturn(Optional.of(category));
 
 		this.service.deleteCategory(1L);
-		
+
 		verify(this.repository, times(1)).delete(category);
 	}
-	
+
 	@Test
-	public void naoDeveriaDeletarUmaCategoriaPoisNaoExisteCategoriaComOIdInformado() {
+	public void shouldNotDeleteACategoryBecauseThereIsNoCategoryWithTheInformedId() {
 		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
-		assertThatExceptionOfType(ResourceNotFoundException.class)
-				.isThrownBy(() -> this.service.deleteCategory(1L));
+		assertThatExceptionOfType(ResourceNotFoundException.class).isThrownBy(() -> this.service.deleteCategory(1L));
 	}
 }

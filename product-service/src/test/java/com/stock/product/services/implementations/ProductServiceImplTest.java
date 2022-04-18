@@ -177,7 +177,7 @@ class ProductServiceImplTest {
 	}
 
 	@Test
-	public void ShouldNotFindAProductBecauseThereIsNoProductWithTheInformedId() {
+	public void shouldNotFindAProductBecauseThereIsNoProductWithTheInformedId() {
 		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
 		assertThatExceptionOfType(ResourceNotFoundException.class).isThrownBy(() -> this.service.findById(2L));
@@ -195,7 +195,7 @@ class ProductServiceImplTest {
 	}
 
 	@Test
-	public void ShouldNotDeleteAProductBecauseThereIsNoProductWithTheInformedId() {
+	public void shouldNotDeleteAProductBecauseThereIsNoProductWithTheInformedId() {
 		when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
 		assertThatExceptionOfType(ResourceNotFoundException.class).isThrownBy(() -> this.service.deleteProduct(2L));

@@ -75,6 +75,9 @@ public class MovementServiceImpl implements MovementService {
 				stock.entrance(movement.getAmount());
 				stock.setPrice(movement.getPrice());
 			} else {
+				if (movement.getAmount() > stock.getStockQuantity()) {
+					throw new ResourceNotFoundException("Stock don't have enough quantity for this movement");
+				}
 				stock.exit(movement.getAmount());
 				stock.setExitPrice(movement.getPrice());
 			}
@@ -90,6 +93,9 @@ public class MovementServiceImpl implements MovementService {
 				stock.entrance(movement.getAmount());
 				stock.setPrice(movement.getPrice());
 			} else {
+				if (movement.getAmount() > stock.getStockQuantity()) {
+					throw new ResourceNotFoundException("Stock don't have enough quantity for this movement");
+				}
 				stock.exit(movement.getAmount());
 				stock.setExitPrice(movement.getPrice());
 			}
