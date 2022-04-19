@@ -27,6 +27,8 @@ import com.stock.movement.services.MovementService;
 @Service
 public class MovementServiceImpl implements MovementService {
 
+	private String actionException="Stock don't have enough quantity for this movement";
+	
 	@Autowired
 	private MovementRepository repository;
 
@@ -49,7 +51,7 @@ public class MovementServiceImpl implements MovementService {
 			stock.setLastEntrancePrice(movement.getPrice());
 		} else {
 			if (movement.getAmount() > stock.getStockQuantity()) {
-				throw new ResourceNotFoundException("Stock don't have enough quantity for this movement");
+				throw new ResourceNotFoundException(actionException);
 			}
 			stock.exit(movement.getAmount());
 			stock.setLastExitPrice(movement.getPrice());
@@ -77,7 +79,7 @@ public class MovementServiceImpl implements MovementService {
 				stock.setLastEntrancePrice(movement.getPrice());
 			} else {
 				if (movement.getAmount() > stock.getStockQuantity()) {
-					throw new ResourceNotFoundException("Stock don't have enough quantity for this movement");
+					throw new ResourceNotFoundException(actionException);
 				}
 				stock.exit(movement.getAmount());
 				stock.setLastExitPrice(movement.getPrice());

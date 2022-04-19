@@ -22,6 +22,8 @@ import com.stock.services.StockService;
 
 @Service
 public class StockServiceImpl implements StockService {
+   
+	private	 String actionException = "Id not found ";
 
 	@Autowired
 	private StockRepository stockRepository;
@@ -32,7 +34,7 @@ public class StockServiceImpl implements StockService {
 	@Override
 	public StockDTO search(Long id) {
 		Stock stock = stockRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+				.orElseThrow(() -> new ResourceNotFoundException(actionException + id));
 		return mapper.map(stock, StockDTO.class);
 	}
 
@@ -53,7 +55,7 @@ public class StockServiceImpl implements StockService {
 	@Override
 	public void delete(Long id) {
 		Stock stock = stockRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+				.orElseThrow(() -> new ResourceNotFoundException(actionException + id));
 		if (stock.getStockQuantity() == 0) {
 			stockRepository.deleteById(id);
 		} else {
@@ -66,7 +68,7 @@ public class StockServiceImpl implements StockService {
 	@Override
 	public StockDTO update(Long id, StockFormDTO body) {
 		Stock stock = stockRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+				.orElseThrow(() -> new ResourceNotFoundException(actionException + id));
 
 		BeanUtils.copyProperties(body, stock, "id");
 		return mapper.map(stockRepository.save(stock), StockDTO.class);
